@@ -3,59 +3,38 @@ import { useSearchParams, Link } from "react-router-dom";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import { Button } from "@/components/ui/button";
-import { Heart, Sparkles, Star, Home } from "lucide-react";
+import { Heart, Sparkles, Home, AlertTriangle } from "lucide-react";
 
 const Result = () => {
   const [searchParams] = useSearchParams();
-  const [displayPercentage, setDisplayPercentage] = useState(0);
-  const [showResult, setShowResult] = useState(false);
+  const [showReveal, setShowReveal] = useState(false);
   
   let resultData = { 
     prankId: "", 
     friendName: "", 
     crushName: "", 
-    answers: {} as Record<string, boolean> 
+    answers: {} as Record<string, boolean>,
+    pranksterName: ""
   };
   
   try {
-    resultData = JSON.parse(atob(searchParams.get("data") || ""));
+    const data = JSON.parse(atob(searchParams.get("data") || ""));
+    resultData = { ...resultData, ...data };
+    
+    // Get prankster name from the original prank data
+    if (data.prankId) {
+      const prankData = JSON.parse(atob(data.prankId));
+      resultData.pranksterName = prankData.yourName || "";
+    }
   } catch {
     // Invalid data
   }
 
-  // Calculate fake percentage based on answers
-  const yesCount = Object.values(resultData.answers).filter(Boolean).length;
-  const basePercentage = 60 + (yesCount * 6) + Math.floor(Math.random() * 10);
-  const finalPercentage = Math.min(basePercentage, 99);
-
   useEffect(() => {
-    // Animated counting effect
-    const duration = 2000;
-    const steps = 60;
-    const stepDuration = duration / steps;
-    const stepValue = finalPercentage / steps;
-    
-    let current = 0;
-    const interval = setInterval(() => {
-      current += stepValue;
-      if (current >= finalPercentage) {
-        setDisplayPercentage(finalPercentage);
-        clearInterval(interval);
-        setTimeout(() => setShowResult(true), 500);
-      } else {
-        setDisplayPercentage(Math.floor(current));
-      }
-    }, stepDuration);
-
-    return () => clearInterval(interval);
-  }, [finalPercentage]);
-
-  const getMessage = () => {
-    if (finalPercentage >= 90) return "💕 True Love! You're meant to be together!";
-    if (finalPercentage >= 75) return "😍 Amazing compatibility! Sparks are flying!";
-    if (finalPercentage >= 60) return "💖 Great potential! Keep pursuing this love!";
-    return "💫 There's hope! Love takes time to bloom!";
-  };
+    // Show prank reveal after a brief suspense
+    const timer = setTimeout(() => setShowReveal(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -63,127 +42,97 @@ const Result = () => {
       
       <div className="relative z-10 container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-lg mx-auto">
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <HeartIcon size="lg" animated />
+          {/* Loading state before reveal */}
+          {!showReveal && (
+            <div className="text-center">
+              <div className="card-romantic rounded-3xl p-8">
+                <Heart className="w-16 h-16 text-primary mx-auto animate-heartbeat mb-4" fill="currentColor" />
+                <h2 className="text-2xl font-bold text-gradient mb-2">Calculating Love...</h2>
+                <p className="text-muted-foreground">Please wait while we analyze your compatibility 💕</p>
+              </div>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2">
-              Love Results
-            </h1>
-          </div>
+          )}
 
-          <div className="card-romantic rounded-3xl p-8 relative overflow-hidden">
-            <div className="absolute -top-4 -right-4 opacity-20">
-              <HeartIcon size="xl" />
-            </div>
-            <div className="absolute -bottom-4 -left-4 opacity-10">
-              <HeartIcon size="lg" />
-            </div>
-
-            <div className="relative z-10 space-y-8">
-              {/* Names */}
-              <div className="flex items-center justify-center gap-4">
-                <div className="bg-secondary rounded-xl px-4 py-2 text-center">
-                  <p className="font-bold text-foreground">{resultData.friendName}</p>
+          {/* Prank Reveal */}
+          {showReveal && (
+            <>
+              <div className="text-center mb-8">
+                <div className="flex items-center justify-center mb-4">
+                  <AlertTriangle className="w-16 h-16 text-yellow-500 animate-bounce" />
                 </div>
-                <Heart className="w-8 h-8 text-primary animate-heartbeat" fill="currentColor" />
-                <div className="bg-secondary rounded-xl px-4 py-2 text-center">
-                  <p className="font-bold text-primary">{resultData.crushName}</p>
-                </div>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+                  You Have Been Fooled by {resultData.pranksterName}! 😂
+                </h1>
+                <p className="text-muted-foreground">
+                  Your name and name of your love has been shared with <span className="text-primary font-bold">{resultData.pranksterName}</span>
+                </p>
               </div>
 
-              {/* Percentage Circle */}
-              <div className="relative w-48 h-48 mx-auto">
-                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    fill="none"
-                    stroke="hsl(var(--secondary))"
-                    strokeWidth="8"
-                  />
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    fill="none"
-                    stroke="hsl(var(--primary))"
-                    strokeWidth="8"
-                    strokeLinecap="round"
-                    strokeDasharray={`${(displayPercentage / 100) * 283} 283`}
-                    className="transition-all duration-100 ease-out"
-                    style={{
-                      filter: "drop-shadow(0 0 8px hsl(var(--primary) / 0.5))"
-                    }}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-5xl font-bold text-gradient animate-count-up">
-                    {displayPercentage}%
-                  </span>
-                  <span className="text-sm text-muted-foreground">Love Match</span>
+              <div className="card-romantic rounded-3xl p-8 relative overflow-hidden">
+                <div className="absolute -top-4 -right-4 opacity-20">
+                  <HeartIcon size="xl" />
                 </div>
-              </div>
 
-              {/* Result Message */}
-              {showResult && (
-                <div className="text-center space-y-4 animate-count-up">
-                  <div className="flex items-center justify-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star 
-                        key={i} 
-                        className={`w-6 h-6 ${i < Math.floor(finalPercentage / 20) ? 'text-yellow-400' : 'text-muted'}`}
-                        fill={i < Math.floor(finalPercentage / 20) ? 'currentColor' : 'none'}
-                      />
-                    ))}
+                <div className="relative z-10 space-y-6">
+                  {/* Cute character/emoji */}
+                  <div className="text-center">
+                    <div className="text-8xl mb-4">🙈</div>
                   </div>
-                  <p className="text-lg font-semibold text-foreground">
-                    {getMessage()}
-                  </p>
-                </div>
-              )}
 
-              {/* Fun fact */}
-              {showResult && (
-                <div className="bg-secondary rounded-xl p-4 text-center animate-count-up">
-                  <p className="text-sm text-muted-foreground">
-                    <Sparkles className="w-4 h-4 inline mr-1 text-primary" />
-                    {yesCount >= 4 
-                      ? "Wow! You really have strong feelings! 💕" 
-                      : yesCount >= 2 
-                        ? "Love is in the air! Keep trying! 🌹"
-                        : "Every love story starts somewhere! ✨"
-                    }
-                  </p>
-                </div>
-              )}
+                  {/* Revealed info */}
+                  <div className="bg-secondary rounded-xl p-4 space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">Your Name:</span>
+                      <span className="font-bold text-foreground">{resultData.friendName}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">Your Crush:</span>
+                      <span className="font-bold text-primary">{resultData.crushName}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">Shared with:</span>
+                      <span className="font-bold text-foreground">{resultData.pranksterName}</span>
+                    </div>
+                  </div>
 
-              {/* Share prompt */}
-              {showResult && (
-                <div className="text-center space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    Want to find out your other friends' crushes too?
-                  </p>
-                  <Link to="/">
-                    <Button variant="romantic" size="lg" className="gap-2">
-                      <Heart className="w-5 h-5" fill="currentColor" />
-                      Create Your Own Link
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
+                  <div className="text-center py-4">
+                    <p className="text-lg font-semibold text-foreground mb-2">
+                      😏 {resultData.pranksterName} now knows your secret crush!
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Don't worry, it's just a fun prank! Now it's your turn to prank your friends!
+                    </p>
+                  </div>
 
-          <div className="mt-8 text-center">
-            <Link to="/">
-              <Button variant="ghost" className="gap-2">
-                <Home className="w-4 h-4" />
-                Go Home
-              </Button>
-            </Link>
-          </div>
+                  {/* CTA to create own prank */}
+                  <div className="space-y-4">
+                    <div className="bg-primary/10 rounded-xl p-4 text-center">
+                      <Sparkles className="w-6 h-6 text-primary mx-auto mb-2" />
+                      <p className="text-sm text-foreground font-medium">
+                        Register now to prank your friends too!
+                      </p>
+                    </div>
+
+                    <Link to="/">
+                      <Button variant="romantic" size="lg" className="w-full gap-2">
+                        <Heart className="w-5 h-5" fill="currentColor" />
+                        Create Your Own Prank Link
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 text-center">
+                <Link to="/">
+                  <Button variant="ghost" className="gap-2">
+                    <Home className="w-4 h-4" />
+                    Go Home
+                  </Button>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

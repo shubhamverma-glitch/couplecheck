@@ -32,7 +32,7 @@ const Prank = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
 
-  let prankData = { yourName: "", crushName: "" };
+  let prankData = { yourName: "" };
   try {
     prankData = JSON.parse(atob(prankId));
   } catch {

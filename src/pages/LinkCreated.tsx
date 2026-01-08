@@ -12,7 +12,7 @@ const LinkCreated = () => {
   const [copied, setCopied] = useState(false);
   const prankId = searchParams.get("id") || "";
   
-  let prankData = { yourName: "", crushName: "" };
+  let prankData = { yourName: "" };
   try {
     prankData = JSON.parse(atob(prankId));
   } catch {
@@ -72,18 +72,12 @@ const LinkCreated = () => {
             </div>
 
             <div className="relative z-10 space-y-6">
-              <div className="bg-secondary rounded-xl p-4 text-center">
+              <div className="bg-secondary rounded-xl p-6 text-center">
+                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Heart className="w-8 h-8 text-primary" fill="currentColor" />
+                </div>
                 <p className="text-sm text-muted-foreground mb-1">Prank created by</p>
-                <p className="font-bold text-lg text-foreground">{prankData.yourName}</p>
-              </div>
-
-              <div className="flex items-center justify-center">
-                <Heart className="w-8 h-8 text-primary animate-heartbeat" fill="currentColor" />
-              </div>
-
-              <div className="bg-secondary rounded-xl p-4 text-center">
-                <p className="text-sm text-muted-foreground mb-1">Secret crush name</p>
-                <p className="font-bold text-lg text-primary">{prankData.crushName}</p>
+                <p className="font-bold text-xl text-foreground">{prankData.yourName}</p>
               </div>
 
               <div className="space-y-3">
@@ -119,9 +113,9 @@ const LinkCreated = () => {
               </div>
 
               <p className="text-center text-sm text-muted-foreground">
-                When your friend clicks the link, they'll see a "Love Calculator". 
-                They'll enter their name and answer questions about their crush - 
-                and you'll see all their answers! 😏
+                When your friend clicks the link, they'll think it's a real "Love Calculator". 
+                They'll enter their name, their crush's name, and answer questions - 
+                then get pranked and see that YOU received all their secrets! 😏
               </p>
             </div>
           </div>

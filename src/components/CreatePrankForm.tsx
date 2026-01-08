@@ -7,14 +7,13 @@ import HeartIcon from "./HeartIcon";
 
 const CreatePrankForm = () => {
   const [yourName, setYourName] = useState("");
-  const [crushName, setCrushName] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (yourName.trim() && crushName.trim()) {
-      // Create a simple encoded link
-      const prankId = btoa(JSON.stringify({ yourName, crushName, createdAt: Date.now() }));
+    if (yourName.trim()) {
+      // Create a simple encoded link with only prankster's name
+      const prankId = btoa(JSON.stringify({ yourName, createdAt: Date.now() }));
       navigate(`/link-created?id=${encodeURIComponent(prankId)}`);
     }
   };
@@ -38,7 +37,7 @@ const CreatePrankForm = () => {
           </div>
 
           <p className="text-center text-muted-foreground mb-8">
-            Enter your name and your crush's name. Share the link with friends to reveal their secrets! 💕
+            Enter your name to create a prank link. Share it with friends to discover their crush's name! 💕
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -61,21 +60,6 @@ const CreatePrankForm = () => {
               <Heart className="w-8 h-8 text-primary animate-heartbeat" fill="currentColor" />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <Heart className="w-4 h-4 text-primary" fill="currentColor" />
-                Your Crush's Name
-              </label>
-              <Input
-                type="text"
-                placeholder="Who makes your heart skip a beat?"
-                value={crushName}
-                onChange={(e) => setCrushName(e.target.value)}
-                required
-                className="text-center"
-              />
-            </div>
-
             <Button 
               type="submit" 
               variant="romantic" 
@@ -83,7 +67,7 @@ const CreatePrankForm = () => {
               className="w-full mt-6"
             >
               <Heart className="w-5 h-5" fill="currentColor" />
-              Create Magic Link
+              Create Prank Link
               <Sparkles className="w-5 h-5" />
             </Button>
           </form>
