@@ -3,16 +3,22 @@ import { useSearchParams, Link } from "react-router-dom";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import { Button } from "@/components/ui/button";
-import { Heart, ArrowLeft, Users, Eye, Check, X } from "lucide-react";
+import { Heart, ArrowLeft, Users, Eye, Check, X, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PrankResponse {
   id: string;
-  prankId: string;
-  pranksterName: string;
-  friendName: string;
-  crushName: string;
+  prank_id: string;
+  friend_name: string;
+  crush_name: string;
   answers: Record<string, boolean>;
-  submittedAt: string;
+  submitted_at: string;
+}
+
+interface Prank {
+  id: string;
+  creator_name: string;
+  crush_name: string;
 }
 
 const questions = [
@@ -28,19 +34,43 @@ const Friendboard = () => {
   const [searchParams] = useSearchParams();
   const prankId = searchParams.get("id") || "";
   const [responses, setResponses] = useState<PrankResponse[]>([]);
+  const [prank, setPrank] = useState<Prank | null>(null);
   const [selectedResponse, setSelectedResponse] = useState<PrankResponse | null>(null);
-
-  let prankData = { yourName: "" };
-  try {
-    prankData = JSON.parse(atob(prankId));
-  } catch {
-    // Invalid data
-  }
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const allResponses: PrankResponse[] = JSON.parse(localStorage.getItem("prankResponses") || "[]");
-    const filteredResponses = allResponses.filter(r => r.prankId === prankId);
-    setResponses(filteredResponses);
+    const fetchData = async () => {
+      if (!prankId) {
+        setIsLoading(false);
+        return;
+      }
+
+      // Fetch prank info
+      const { data: prankData } = await supabase
+        .from("pranks")
+        .select("*")
+        .eq("id", prankId)
+        .maybeSingle();
+
+      if (prankData) {
+        setPrank(prankData);
+      }
+
+      // Fetch responses
+      const { data: responsesData } = await supabase
+        .from("prank_responses")
+        .select("*")
+        .eq("prank_id", prankId)
+        .order("submitted_at", { ascending: false });
+
+      if (responsesData) {
+        setResponses(responsesData as PrankResponse[]);
+      }
+
+      setIsLoading(false);
+    };
+
+    fetchData();
   }, [prankId]);
 
   const formatDate = (dateString: string) => {
@@ -51,6 +81,14 @@ const Friendboard = () => {
       minute: "2-digit",
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -69,9 +107,9 @@ const Friendboard = () => {
             <p className="text-muted-foreground">
               See who fell for your prank! 😏
             </p>
-            {prankData.yourName && (
+            {prank && (
               <p className="text-sm text-primary mt-2">
-                Prank by: <span className="font-bold">{prankData.yourName}</span>
+                Prank by: <span className="font-bold">{prank.creator_name}</span>
               </p>
             )}
           </div>
@@ -99,11 +137,11 @@ const Friendboard = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Friend's Name</p>
-                      <p className="font-bold text-xl text-foreground">{selectedResponse.friendName}</p>
+                      <p className="font-bold text-xl text-foreground">{selectedResponse.friend_name}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Their Crush</p>
-                      <p className="font-bold text-xl text-primary">{selectedResponse.crushName}</p>
+                      <p className="font-bold text-xl text-primary">{selectedResponse.crush_name}</p>
                     </div>
                   </div>
                   <div className="flex items-center justify-center gap-2 mt-4">
@@ -139,7 +177,7 @@ const Friendboard = () => {
                 </div>
 
                 <p className="text-xs text-muted-foreground text-center">
-                  Submitted: {formatDate(selectedResponse.submittedAt)}
+                  Submitted: {formatDate(selectedResponse.submitted_at)}
                 </p>
               </div>
             </div>
@@ -180,15 +218,15 @@ const Friendboard = () => {
                             <Heart className="w-6 h-6 text-primary" fill="currentColor" />
                           </div>
                           <div>
-                            <p className="font-bold text-foreground">{response.friendName}</p>
+                            <p className="font-bold text-foreground">{response.friend_name}</p>
                             <p className="text-sm text-primary">
-                              Crush: <span className="font-semibold">{response.crushName}</span>
+                              Crush: <span className="font-semibold">{response.crush_name}</span>
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-muted-foreground">
-                            {formatDate(response.submittedAt)}
+                            {formatDate(response.submitted_at)}
                           </span>
                           <Button variant="ghost" size="icon" className="shrink-0">
                             <Eye className="w-4 h-4" />

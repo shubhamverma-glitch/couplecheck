@@ -1,23 +1,47 @@
 import { useSearchParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Copy, Check, Share2, ArrowLeft, Users } from "lucide-react";
+import { Heart, Copy, Check, Share2, ArrowLeft, Users, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Prank {
+  id: string;
+  creator_name: string;
+  crush_name: string;
+}
 
 const LinkCreated = () => {
   const [searchParams] = useSearchParams();
   const [copied, setCopied] = useState(false);
+  const [prank, setPrank] = useState<Prank | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const prankId = searchParams.get("id") || "";
-  
-  let prankData = { yourName: "" };
-  try {
-    prankData = JSON.parse(atob(prankId));
-  } catch {
-    // Invalid data
-  }
+
+  useEffect(() => {
+    const fetchPrank = async () => {
+      if (!prankId) {
+        setIsLoading(false);
+        return;
+      }
+
+      const { data } = await supabase
+        .from("pranks")
+        .select("*")
+        .eq("id", prankId)
+        .maybeSingle();
+
+      if (data) {
+        setPrank(data);
+      }
+      setIsLoading(false);
+    };
+
+    fetchPrank();
+  }, [prankId]);
 
   const prankLink = `${window.location.origin}/prank?id=${encodeURIComponent(prankId)}`;
 
@@ -48,6 +72,14 @@ const LinkCreated = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <FloatingHearts />
@@ -77,7 +109,7 @@ const LinkCreated = () => {
                   <Heart className="w-8 h-8 text-primary" fill="currentColor" />
                 </div>
                 <p className="text-sm text-muted-foreground mb-1">Prank created by</p>
-                <p className="font-bold text-xl text-foreground">{prankData.yourName}</p>
+                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "Unknown"}</p>
               </div>
 
               <div className="space-y-3">
