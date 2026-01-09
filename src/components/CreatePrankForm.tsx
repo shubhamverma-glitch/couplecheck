@@ -9,13 +9,12 @@ import { toast } from "sonner";
 
 const CreatePrankForm = () => {
   const [yourName, setYourName] = useState("");
-  const [crushName, setCrushName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!yourName.trim() || !crushName.trim()) return;
+    if (!yourName.trim()) return;
 
     setIsLoading(true);
     try {
@@ -23,7 +22,7 @@ const CreatePrankForm = () => {
         .from("pranks")
         .insert({
           creator_name: yourName.trim(),
-          crush_name: crushName.trim(),
+          crush_name: "",
         })
         .select()
         .single();
@@ -77,20 +76,6 @@ const CreatePrankForm = () => {
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <Heart className="w-4 h-4 text-primary" />
-                Your Crush's Name
-              </label>
-              <Input
-                type="text"
-                placeholder="Enter your crush's name..."
-                value={crushName}
-                onChange={(e) => setCrushName(e.target.value)}
-                required
-                className="text-center"
-              />
-            </div>
 
             <div className="flex justify-center py-2">
               <Heart className="w-8 h-8 text-primary animate-heartbeat" fill="currentColor" />
