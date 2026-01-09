@@ -4,32 +4,48 @@ import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import { Button } from "@/components/ui/button";
 import { Heart, Sparkles, Home } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
 const Result = () => {
   const [searchParams] = useSearchParams();
   const [showReveal, setShowReveal] = useState(false);
+  const [pranksterName, setPranksterName] = useState("");
+  
   let resultData = {
     prankId: "",
     friendName: "",
     crushName: "",
     answers: {} as Record<string, boolean>,
-    pranksterName: ""
   };
+  
   try {
     const data = JSON.parse(atob(searchParams.get("data") || ""));
     resultData = {
       ...resultData,
       ...data
     };
-
-    // Get prankster name from the original prank data
-    if (data.prankId) {
-      const prankData = JSON.parse(atob(data.prankId));
-      resultData.pranksterName = prankData.yourName || "";
-    }
   } catch {
     // Invalid data
   }
+
   useEffect(() => {
+    // Fetch prankster name from database
+    const fetchPranksterName = async () => {
+      if (resultData.prankId) {
+        const { data } = await supabase
+          .from("pranks")
+          .select("creator_name")
+          .eq("id", resultData.prankId)
+          .maybeSingle();
+        
+        if (data?.creator_name) {
+          setPranksterName(data.creator_name);
+        }
+      }
+    };
+    
+    fetchPranksterName();
+    
     // Show prank reveal after a brief suspense
     const timer = setTimeout(() => setShowReveal(true), 1500);
     return () => clearTimeout(timer);
@@ -55,10 +71,10 @@ const Result = () => {
                   
                 </div>
                 <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                  You Have Been Fooled by {resultData.pranksterName}! 😂
+                  You Have Been Fooled by {pranksterName}! 😂
                 </h1>
                 <p className="text-muted-foreground">
-                  Your name and name of your love has been shared with <span className="text-primary font-bold">{resultData.pranksterName}</span>
+                  Your name and name of your love has been shared with <span className="text-primary font-bold">{pranksterName}</span>
                 </p>
               </div>
 
@@ -84,14 +100,14 @@ const Result = () => {
                       <span className="font-bold text-primary">{resultData.crushName}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      
-                      <span className="font-bold text-foreground">{resultData.pranksterName}</span>
+                      <span className="text-muted-foreground">Pranked by:</span>
+                      <span className="font-bold text-foreground">{pranksterName}</span>
                     </div>
                   </div>
 
                   <div className="text-center py-4">
                     <p className="text-lg font-semibold text-foreground mb-2">
-                      😏 {resultData.pranksterName} now knows your secret crush!
+                      😏 {pranksterName} now knows your secret crush!
                     </p>
                     <p className="text-sm text-muted-foreground">
                       Don't worry, it's just a fun prank! Now it's your turn to prank your friends!
