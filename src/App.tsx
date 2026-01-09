@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import LinkCreated from "./pages/LinkCreated";
 import Prank from "./pages/Prank";
 import Result from "./pages/Result";
+import Friendboard from "./pages/Friendboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/link-created" element={<LinkCreated />} />
           <Route path="/prank" element={<Prank />} />
           <Route path="/result" element={<Result />} />
+          <Route path="/friendboard" element={<Friendboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

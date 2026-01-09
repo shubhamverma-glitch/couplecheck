@@ -26,7 +26,7 @@ const Prank = () => {
   const navigate = useNavigate();
   const prankId = searchParams.get("id") || "";
   
-  const [step, setStep] = useState<"name" | "crush" | "questions">("name");
+  const [step, setStep] = useState<"info" | "questions">("info");
   const [friendName, setFriendName] = useState("");
   const [crushName, setCrushName] = useState("");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -39,33 +39,42 @@ const Prank = () => {
     // Invalid data
   }
 
-  const handleNameSubmit = (e: React.FormEvent) => {
+  const handleInfoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (friendName.trim()) {
-      setStep("crush");
-    }
-  };
-
-  const handleCrushSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (crushName.trim()) {
+    if (friendName.trim() && crushName.trim()) {
       setStep("questions");
     }
   };
 
   const handleAnswer = (answer: boolean) => {
     const currentQuestion = questions[currentQuestionIndex];
-    setAnswers((prev) => ({ ...prev, [currentQuestion.id]: answer }));
+    const newAnswers = { ...answers, [currentQuestion.id]: answer };
+    setAnswers(newAnswers);
     
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // All questions answered, navigate to results
+      // Save to localStorage for friendboard
+      const responseData = {
+        id: Date.now().toString(),
+        prankId,
+        pranksterName: prankData.yourName,
+        friendName,
+        crushName,
+        answers: newAnswers,
+        submittedAt: new Date().toISOString(),
+      };
+      
+      const existingResponses = JSON.parse(localStorage.getItem("prankResponses") || "[]");
+      existingResponses.push(responseData);
+      localStorage.setItem("prankResponses", JSON.stringify(existingResponses));
+
+      // Navigate to results
       const resultData = btoa(JSON.stringify({
         prankId,
         friendName,
         crushName,
-        answers: { ...answers, [currentQuestion.id]: answer },
+        answers: newAnswers,
       }));
       navigate(`/result?data=${encodeURIComponent(resultData)}`);
     }
@@ -99,9 +108,9 @@ const Prank = () => {
             </div>
 
             <div className="relative z-10">
-              {/* Step 1: Enter Name */}
-              {step === "name" && (
-                <form onSubmit={handleNameSubmit} className="space-y-6">
+              {/* Step 1: Enter Both Names on Same Page */}
+              {step === "info" && (
+                <form onSubmit={handleInfoSubmit} className="space-y-6">
                   <div className="text-center mb-6">
                     <Sparkles className="w-10 h-10 text-primary mx-auto mb-3" />
                     <h2 className="text-xl font-bold">Welcome!</h2>
@@ -110,60 +119,50 @@ const Prank = () => {
                     </p>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground">
-                      What's your name?
-                    </label>
-                    <Input
-                      type="text"
-                      placeholder="Enter your name..."
-                      value={friendName}
-                      onChange={(e) => setFriendName(e.target.value)}
-                      required
-                      className="text-center"
-                    />
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-foreground">
+                        What's your name?
+                      </label>
+                      <Input
+                        type="text"
+                        placeholder="Enter your name..."
+                        value={friendName}
+                        onChange={(e) => setFriendName(e.target.value)}
+                        required
+                        className="text-center"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-center gap-3 py-2">
+                      <div className="h-px bg-border flex-1" />
+                      <Heart className="w-5 h-5 text-primary" fill="currentColor" />
+                      <div className="h-px bg-border flex-1" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-foreground">
+                        What's your crush's name?
+                      </label>
+                      <Input
+                        type="text"
+                        placeholder="Enter their name..."
+                        value={crushName}
+                        onChange={(e) => setCrushName(e.target.value)}
+                        required
+                        className="text-center"
+                      />
+                    </div>
                   </div>
 
                   <Button type="submit" variant="romantic" size="lg" className="w-full gap-2">
-                    Continue
-                    <ArrowRight className="w-5 h-5" />
-                  </Button>
-                </form>
-              )}
-
-              {/* Step 2: Enter Crush Name */}
-              {step === "crush" && (
-                <form onSubmit={handleCrushSubmit} className="space-y-6">
-                  <div className="text-center mb-6">
-                    <Heart className="w-10 h-10 text-primary mx-auto mb-3 animate-heartbeat" fill="currentColor" />
-                    <h2 className="text-xl font-bold">Hey, {friendName}! 👋</h2>
-                    <p className="text-muted-foreground text-sm">
-                      Now tell us about your crush
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground">
-                      What's your crush's name?
-                    </label>
-                    <Input
-                      type="text"
-                      placeholder="Enter their name..."
-                      value={crushName}
-                      onChange={(e) => setCrushName(e.target.value)}
-                      required
-                      className="text-center"
-                    />
-                  </div>
-
-                  <Button type="submit" variant="romantic" size="lg" className="w-full gap-2">
-                    Let's Find Out
+                    Calculate Love
                     <Heart className="w-5 h-5" fill="currentColor" />
                   </Button>
                 </form>
               )}
 
-              {/* Step 3: Questions */}
+              {/* Step 2: Questions */}
               {step === "questions" && (
                 <div className="space-y-6">
                   {/* Progress bar */}
