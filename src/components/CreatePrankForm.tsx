@@ -6,29 +6,23 @@ import { Heart, Sparkles } from "lucide-react";
 import HeartIcon from "./HeartIcon";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-
 const CreatePrankForm = () => {
   const [yourName, setYourName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!yourName.trim()) return;
-
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("pranks")
-        .insert({
-          creator_name: yourName.trim(),
-          crush_name: "",
-        })
-        .select()
-        .single();
-
+      const {
+        data,
+        error
+      } = await supabase.from("pranks").insert({
+        creator_name: yourName.trim(),
+        crush_name: ""
+      }).select().single();
       if (error) throw error;
-
       navigate(`/link-created?id=${data.id}`);
     } catch (error) {
       console.error("Error creating prank:", error);
@@ -37,9 +31,7 @@ const CreatePrankForm = () => {
       setIsLoading(false);
     }
   };
-
-  return (
-    <div className="w-full max-w-md mx-auto">
+  return <div className="w-full max-w-md mx-auto">
       <div className="card-romantic rounded-3xl p-8 relative overflow-hidden">
         {/* Decorative hearts */}
         <div className="absolute -top-4 -right-4 opacity-20">
@@ -66,28 +58,13 @@ const CreatePrankForm = () => {
                 <Sparkles className="w-4 h-4 text-primary" />
                 Your Name
               </label>
-              <Input
-                type="text"
-                placeholder="Enter your name..."
-                value={yourName}
-                onChange={(e) => setYourName(e.target.value)}
-                required
-                className="text-center"
-              />
+              <Input type="text" placeholder="Enter your name..." value={yourName} onChange={e => setYourName(e.target.value)} required className="text-center" />
             </div>
 
 
-            <div className="flex justify-center py-2">
-              <Heart className="w-8 h-8 text-primary animate-heartbeat" fill="currentColor" />
-            </div>
+            
 
-            <Button 
-              type="submit" 
-              variant="romantic" 
-              size="lg" 
-              className="w-full mt-6"
-              disabled={isLoading}
-            >
+            <Button type="submit" variant="romantic" size="lg" className="w-full mt-6" disabled={isLoading}>
               <Heart className="w-5 h-5" fill="currentColor" />
               {isLoading ? "Creating..." : "Create Prank Link"}
               <Sparkles className="w-5 h-5" />
@@ -95,8 +72,6 @@ const CreatePrankForm = () => {
           </form>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CreatePrankForm;
