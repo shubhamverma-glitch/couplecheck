@@ -1,7 +1,7 @@
 import FloatingHearts from "@/components/FloatingHearts";
 import CreatePrankForm from "@/components/CreatePrankForm";
 import HeartIcon from "@/components/HeartIcon";
-import { Heart, Sparkles, Share2, Eye } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 const Index = () => {
   return (
@@ -30,44 +30,6 @@ const Index = () => {
           {/* Main Form */}
           <CreatePrankForm />
 
-          {/* How it works */}
-          <div className="mt-16 max-w-3xl mx-auto">
-            <h3 className="text-2xl font-bold text-center text-gradient mb-8">
-              How It Works
-            </h3>
-            
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="card-romantic rounded-2xl p-6 text-center">
-                <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center mx-auto mb-4">
-                  <Heart className="w-7 h-7 text-primary" fill="currentColor" />
-                </div>
-                <h4 className="font-bold text-lg mb-2">1. Create Link</h4>
-                <p className="text-muted-foreground text-sm">
-                  Enter your name and your crush's name to generate a secret link
-                </p>
-              </div>
-
-              <div className="card-romantic rounded-2xl p-6 text-center">
-                <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center mx-auto mb-4">
-                  <Share2 className="w-7 h-7 text-primary" />
-                </div>
-                <h4 className="font-bold text-lg mb-2">2. Share It</h4>
-                <p className="text-muted-foreground text-sm">
-                  Send the link to your friend - they'll see a "Love Calculator"
-                </p>
-              </div>
-
-              <div className="card-romantic rounded-2xl p-6 text-center">
-                <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center mx-auto mb-4">
-                  <Eye className="w-7 h-7 text-primary" />
-                </div>
-                <h4 className="font-bold text-lg mb-2">3. See Secrets</h4>
-                <p className="text-muted-foreground text-sm">
-                  They answer fun questions - you see their crush's name revealed!
-                </p>
-              </div>
-            </div>
-          </div>
 
           {/* Footer */}
           <div className="mt-16 text-center">
