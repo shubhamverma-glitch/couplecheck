@@ -4,17 +4,38 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Heart, Sparkles } from "lucide-react";
 import HeartIcon from "./HeartIcon";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const CreatePrankForm = () => {
   const [yourName, setYourName] = useState("");
+  const [crushName, setCrushName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (yourName.trim()) {
-      // Create a simple encoded link with only prankster's name
-      const prankId = btoa(JSON.stringify({ yourName, createdAt: Date.now() }));
-      navigate(`/link-created?id=${encodeURIComponent(prankId)}`);
+    if (!yourName.trim() || !crushName.trim()) return;
+
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("pranks")
+        .insert({
+          creator_name: yourName.trim(),
+          crush_name: crushName.trim(),
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      navigate(`/link-created?id=${data.id}`);
+    } catch (error) {
+      console.error("Error creating prank:", error);
+      toast.error("Failed to create prank. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -37,7 +58,7 @@ const CreatePrankForm = () => {
           </div>
 
           <p className="text-center text-muted-foreground mb-8">
-            Enter your name to create a prank link. Share it with friends to discover their crush's name! 💕
+            Enter your details to create a prank link. Share it with friends to discover their crush's name! 💕
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -56,6 +77,21 @@ const CreatePrankForm = () => {
               />
             </div>
 
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                <Heart className="w-4 h-4 text-primary" />
+                Your Crush's Name
+              </label>
+              <Input
+                type="text"
+                placeholder="Enter your crush's name..."
+                value={crushName}
+                onChange={(e) => setCrushName(e.target.value)}
+                required
+                className="text-center"
+              />
+            </div>
+
             <div className="flex justify-center py-2">
               <Heart className="w-8 h-8 text-primary animate-heartbeat" fill="currentColor" />
             </div>
@@ -65,9 +101,10 @@ const CreatePrankForm = () => {
               variant="romantic" 
               size="lg" 
               className="w-full mt-6"
+              disabled={isLoading}
             >
               <Heart className="w-5 h-5" fill="currentColor" />
-              Create Prank Link
+              {isLoading ? "Creating..." : "Create Prank Link"}
               <Sparkles className="w-5 h-5" />
             </Button>
           </form>

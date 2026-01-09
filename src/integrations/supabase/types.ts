@@ -14,7 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      prank_responses: {
+        Row: {
+          answers: Json
+          crush_name: string
+          friend_name: string
+          id: string
+          prank_id: string
+          submitted_at: string
+        }
+        Insert: {
+          answers?: Json
+          crush_name: string
+          friend_name: string
+          id?: string
+          prank_id: string
+          submitted_at?: string
+        }
+        Update: {
+          answers?: Json
+          crush_name?: string
+          friend_name?: string
+          id?: string
+          prank_id?: string
+          submitted_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prank_responses_prank_id_fkey"
+            columns: ["prank_id"]
+            isOneToOne: false
+            referencedRelation: "pranks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pranks: {
+        Row: {
+          created_at: string
+          creator_name: string
+          crush_name: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          creator_name: string
+          crush_name: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          creator_name?: string
+          crush_name?: string
+          id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

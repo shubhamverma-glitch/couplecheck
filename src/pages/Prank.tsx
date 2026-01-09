@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Sparkles, ArrowRight, Check, X } from "lucide-react";
+import { Heart, Sparkles, Check, X, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface Question {
   id: string;
@@ -26,18 +28,36 @@ const Prank = () => {
   const navigate = useNavigate();
   const prankId = searchParams.get("id") || "";
   
-  const [step, setStep] = useState<"info" | "questions">("info");
+  const [step, setStep] = useState<"loading" | "info" | "questions">("loading");
   const [friendName, setFriendName] = useState("");
   const [crushName, setCrushName] = useState("");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [prankExists, setPrankExists] = useState(true);
 
-  let prankData = { yourName: "" };
-  try {
-    prankData = JSON.parse(atob(prankId));
-  } catch {
-    // Invalid data
-  }
+  useEffect(() => {
+    const checkPrank = async () => {
+      if (!prankId) {
+        setPrankExists(false);
+        setStep("info");
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("pranks")
+        .select("id")
+        .eq("id", prankId)
+        .maybeSingle();
+
+      if (error || !data) {
+        setPrankExists(false);
+      }
+      setStep("info");
+    };
+
+    checkPrank();
+  }, [prankId]);
 
   const handleInfoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +66,7 @@ const Prank = () => {
     }
   };
 
-  const handleAnswer = (answer: boolean) => {
+  const handleAnswer = async (answer: boolean) => {
     const currentQuestion = questions[currentQuestionIndex];
     const newAnswers = { ...answers, [currentQuestion.id]: answer };
     setAnswers(newAnswers);
@@ -54,34 +74,59 @@ const Prank = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Save to localStorage for friendboard
-      const responseData = {
-        id: Date.now().toString(),
-        prankId,
-        pranksterName: prankData.yourName,
-        friendName,
-        crushName,
-        answers: newAnswers,
-        submittedAt: new Date().toISOString(),
-      };
-      
-      const existingResponses = JSON.parse(localStorage.getItem("prankResponses") || "[]");
-      existingResponses.push(responseData);
-      localStorage.setItem("prankResponses", JSON.stringify(existingResponses));
+      // Save to database
+      setIsSubmitting(true);
+      try {
+        const { error } = await supabase
+          .from("prank_responses")
+          .insert({
+            prank_id: prankId,
+            friend_name: friendName.trim(),
+            crush_name: crushName.trim(),
+            answers: newAnswers,
+          });
 
-      // Navigate to results
-      const resultData = btoa(JSON.stringify({
-        prankId,
-        friendName,
-        crushName,
-        answers: newAnswers,
-      }));
-      navigate(`/result?data=${encodeURIComponent(resultData)}`);
+        if (error) throw error;
+
+        // Navigate to results
+        const resultData = btoa(JSON.stringify({
+          prankId,
+          friendName,
+          crushName,
+          answers: newAnswers,
+        }));
+        navigate(`/result?data=${encodeURIComponent(resultData)}`);
+      } catch (error) {
+        console.error("Error saving response:", error);
+        toast.error("Failed to save your response. Please try again.");
+        setIsSubmitting(false);
+      }
     }
   };
 
   const currentQuestion = questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+
+  if (step === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!prankExists) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <FloatingHearts />
+        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
+          <HeartIcon size="lg" animated />
+          <h1 className="text-2xl font-bold mt-4 mb-2">Prank Not Found</h1>
+          <p className="text-muted-foreground">This prank link is invalid or has expired.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -195,6 +240,7 @@ const Prank = () => {
                       size="lg" 
                       onClick={() => handleAnswer(false)}
                       className="gap-2"
+                      disabled={isSubmitting}
                     >
                       <X className="w-5 h-5" />
                       No
@@ -204,8 +250,13 @@ const Prank = () => {
                       size="lg" 
                       onClick={() => handleAnswer(true)}
                       className="gap-2"
+                      disabled={isSubmitting}
                     >
-                      <Check className="w-5 h-5" />
+                      {isSubmitting ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <Check className="w-5 h-5" />
+                      )}
                       Yes
                     </Button>
                   </div>
