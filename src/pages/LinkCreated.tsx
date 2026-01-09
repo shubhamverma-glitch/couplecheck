@@ -4,7 +4,7 @@ import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Copy, Check, Share2, ArrowLeft } from "lucide-react";
+import { Heart, Copy, Check, Share2, ArrowLeft, Users } from "lucide-react";
 import { toast } from "sonner";
 
 const LinkCreated = () => {
@@ -117,6 +117,13 @@ const LinkCreated = () => {
                 They'll enter their name, their crush's name, and answer questions - 
                 then get pranked and see that YOU received all their secrets! 😏
               </p>
+
+              <Link to={`/friendboard?id=${encodeURIComponent(prankId)}`} className="block">
+                <Button variant="soft" size="lg" className="w-full gap-2">
+                  <Users className="w-4 h-4" />
+                  View Friendboard
+                </Button>
+              </Link>
             </div>
           </div>
 
