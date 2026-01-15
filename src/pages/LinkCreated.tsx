@@ -43,7 +43,11 @@ const LinkCreated = () => {
     fetchPrank();
   }, [prankId]);
 
-  const prankLink = `${window.location.origin}/prank?id=${encodeURIComponent(prankId)}`;
+  const prankLink = `${window.location.origin}/prank?id=${prankId}`;
+  
+  const shareText = `💝👩‍❤️‍👨 *本物の愛* or *ただの片思い* ? 👩‍❤️‍👩💝
+🥰 このテストで、本物の愛の相手が誰なのかを知ることが出来ますよ! 🥰
+🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩`;
 
   const handleCopy = async () => {
     try {
@@ -61,7 +65,7 @@ const LinkCreated = () => {
       try {
         await navigator.share({
           title: "愛の計算機 💕",
-          text: "愛のパーセンテージを計算しよう！この楽しい愛の計算機を試してみて！",
+          text: shareText,
           url: prankLink,
         });
       } catch {
