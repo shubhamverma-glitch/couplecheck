@@ -49,10 +49,10 @@ const LinkCreated = () => {
     try {
       await navigator.clipboard.writeText(prankLink);
       setCopied(true);
-      toast.success("Link copied! Share it with your friend 💕");
+      toast.success("リンクをコピーしました！友達に共有しよう 💕");
       setTimeout(() => setCopied(false), 3000);
     } catch {
-      toast.error("Failed to copy link");
+      toast.error("リンクのコピーに失敗しました");
     }
   };
 
@@ -60,12 +60,12 @@ const LinkCreated = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Love Calculator 💕",
-          text: "Calculate your love percentage! Try this fun love calculator!",
+          title: "愛の計算機 💕",
+          text: "愛のパーセンテージを計算しよう！この楽しい愛の計算機を試してみて！",
           url: prankLink,
         });
       } catch {
-        // User cancelled or share failed
+        // ユーザーがキャンセルしたか共有に失敗
       }
     } else {
       handleCopy();
@@ -91,10 +91,10 @@ const LinkCreated = () => {
               <HeartIcon size="lg" animated />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
-              Your Link is Ready!
+              リンクの準備完了！
             </h1>
             <p className="text-muted-foreground">
-              Share this link with your friend and watch the magic happen! ✨
+              このリンクを友達に共有して、魔法を見届けよう！✨
             </p>
           </div>
 
@@ -108,13 +108,13 @@ const LinkCreated = () => {
                 <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
                   <Heart className="w-8 h-8 text-primary" fill="currentColor" />
                 </div>
-                <p className="text-sm text-muted-foreground mb-1">Prank created by</p>
-                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "Unknown"}</p>
+                <p className="text-sm text-muted-foreground mb-1">イタズラ作成者</p>
+                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "不明"}</p>
               </div>
 
               <div className="space-y-3">
                 <label className="text-sm font-semibold text-foreground">
-                  Share this link with your friend:
+                  このリンクを友達に共有してください:
                 </label>
                 <div className="flex gap-2">
                   <Input
@@ -136,24 +136,24 @@ const LinkCreated = () => {
               <div className="grid grid-cols-2 gap-3">
                 <Button variant="soft" onClick={handleCopy} className="gap-2">
                   <Copy className="w-4 h-4" />
-                  Copy Link
+                  リンクをコピー
                 </Button>
                 <Button variant="romantic" onClick={handleShare} className="gap-2">
                   <Share2 className="w-4 h-4" />
-                  Share
+                  共有する
                 </Button>
               </div>
 
               <p className="text-center text-sm text-muted-foreground">
-                When your friend clicks the link, they'll think it's a real "Love Calculator". 
-                They'll enter their name, their crush's name, and answer questions - 
-                then get pranked and see that YOU received all their secrets! 😏
+                友達がこのリンクをクリックすると、本物の「愛の計算機」だと思います。
+                彼らは自分の名前、好きな人の名前を入力し、質問に答えます。
+                そして、あなたがすべての秘密を受け取ったことを知ってびっくり！😏
               </p>
 
               <Link to={`/friendboard?id=${encodeURIComponent(prankId)}`} className="block">
                 <Button variant="soft" size="lg" className="w-full gap-2">
                   <Users className="w-4 h-4" />
-                  View Friendboard
+                  フレンドボードを見る
                 </Button>
               </Link>
             </div>
@@ -163,7 +163,7 @@ const LinkCreated = () => {
             <Link to="/">
               <Button variant="ghost" className="gap-2">
                 <ArrowLeft className="w-4 h-4" />
-                Create Another Prank
+                別のイタズラを作成
               </Button>
             </Link>
           </div>
