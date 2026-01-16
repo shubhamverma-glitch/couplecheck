@@ -6,25 +6,22 @@ import { Heart, Sparkles } from "lucide-react";
 import HeartIcon from "./HeartIcon";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-
 const CreatePrankForm = () => {
   const [yourName, setYourName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!yourName.trim()) return;
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("pranks")
-        .insert({
-          creator_name: yourName.trim(),
-          crush_name: ""
-        })
-        .select()
-        .single();
+      const {
+        data,
+        error
+      } = await supabase.from("pranks").insert({
+        creator_name: yourName.trim(),
+        crush_name: ""
+      }).select().single();
       if (error) throw error;
       navigate(`/link-created?id=${data.id}`);
     } catch (error) {
@@ -34,9 +31,7 @@ const CreatePrankForm = () => {
       setIsLoading(false);
     }
   };
-
-  return (
-    <div className="w-full max-w-md mx-auto">
+  return <div className="w-full max-w-md mx-auto">
       <div className="card-romantic rounded-3xl p-8 relative overflow-hidden">
         {/* Decorative hearts */}
         <div className="absolute -top-4 -right-4 opacity-20">
@@ -49,46 +44,31 @@ const CreatePrankForm = () => {
         <div className="relative z-10">
           <div className="flex items-center justify-center gap-2 mb-6">
             <HeartIcon size="md" animated />
-            <h2 className="text-2xl font-bold text-gradient">❤️ Create a Trap ❤️</h2>
+            <h2 className="text-2xl font-bold text-gradient">Create a Trap</h2>
             <HeartIcon size="md" animated />
           </div>
 
           <p className="text-center text-muted-foreground mb-8">
-            Add your name, share the link, and watch the secrets unfold 😍💌
+            Enter your info to create a love trap link. Share it with friends and discover their crush's name! 💕
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
-                ✨ Your Name
+                Your Name
               </label>
-              <Input
-                type="text"
-                placeholder="Type your name here"
-                value={yourName}
-                onChange={(e) => setYourName(e.target.value)}
-                required
-                className="text-center"
-              />
+              <Input type="text" placeholder="Enter your name..." value={yourName} onChange={e => setYourName(e.target.value)} required className="text-center" />
             </div>
 
-            <Button
-              type="submit"
-              variant="romantic"
-              size="lg"
-              className="w-full mt-6"
-              disabled={isLoading}
-            >
+            <Button type="submit" variant="romantic" size="lg" className="w-full mt-6" disabled={isLoading}>
               <Heart className="w-5 h-5" fill="currentColor" />
-              {isLoading ? "Creating..." : "Create Love Trap"}
+              {isLoading ? "Creating..." : "Create Love Trap Link"}
               <Sparkles className="w-5 h-5" />
             </Button>
           </form>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default CreatePrankForm;
