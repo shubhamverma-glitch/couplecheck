@@ -15,12 +15,11 @@ interface Question {
 }
 
 const questions: Question[] = [
-  { id: "kiss", text: "Have you ever kissed your crush?", emoji: "💋" },
-  { id: "date", text: "Have you been on a date with your crush?", emoji: "🌹" },
-  { id: "dream", text: "Do you dream about your crush?", emoji: "💭" },
-  { id: "stalk", text: "Do you check their social media often?", emoji: "📱" },
-  { id: "jealous", text: "Do you get jealous when they talk to others?", emoji: "😤" },
-  { id: "confess", text: "Have you tried to confess your feelings?", emoji: "💌" },
+  { id: "date", text: "Do you want to date {CRUSH_NAME}?", emoji: "💑" },
+  { id: "fake", text: "If {CRUSH_NAME} asked you for a fake relationship, would you say yes?", emoji: "🎭" },
+  { id: "dream", text: "Do you dream about {CRUSH_NAME}?", emoji: "💭" },
+  { id: "spark", text: "Do you feel a spark when you're around them, even in small moments?", emoji: "✨" },
+  { id: "confess", text: "Have you ever tried to confess your feelings to {CRUSH_NAME}?", emoji: "💌" },
 ];
 
 const Prank = () => {
@@ -107,6 +106,11 @@ const Prank = () => {
   const currentQuestion = questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
+  // Replace {CRUSH_NAME} with actual crush name in question text
+  const getQuestionText = (text: string) => {
+    return text.replace(/{CRUSH_NAME}/g, crushName);
+  };
+
   if (step === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -140,10 +144,10 @@ const Prank = () => {
               <HeartIcon size="lg" animated />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2">
-              Love Calculator
+              💖 Love Calculator
             </h1>
             <p className="text-muted-foreground">
-              Find out your true love percentage! 💕
+              Find out how strong your love really is 💘
             </p>
           </div>
 
@@ -160,18 +164,18 @@ const Prank = () => {
                     <Sparkles className="w-10 h-10 text-primary mx-auto mb-3" />
                     <h2 className="text-xl font-bold">Welcome!</h2>
                     <p className="text-muted-foreground text-sm">
-                      Let's calculate your love compatibility
+                      Let's calculate your love match 💘
                     </p>
                   </div>
 
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-foreground">
-                        What's your name?
+                        Your name
                       </label>
                       <Input
                         type="text"
-                        placeholder="Enter your name..."
+                        placeholder="Type your name here"
                         value={friendName}
                         onChange={(e) => setFriendName(e.target.value)}
                         required
@@ -187,11 +191,11 @@ const Prank = () => {
 
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-foreground">
-                        What's your crush's name?
+                        What's the name of your crush? 😁
                       </label>
                       <Input
                         type="text"
-                        placeholder="Enter their name..."
+                        placeholder="Spill the name 👀"
                         value={crushName}
                         onChange={(e) => setCrushName(e.target.value)}
                         required
@@ -201,7 +205,7 @@ const Prank = () => {
                   </div>
 
                   <Button type="submit" variant="romantic" size="lg" className="w-full gap-2">
-                    Calculate Love
+                    😍 Check the Love Score
                     <Heart className="w-5 h-5" fill="currentColor" />
                   </Button>
                 </form>
@@ -227,7 +231,7 @@ const Prank = () => {
                   <div className="text-center py-8">
                     <div className="text-5xl mb-4">{currentQuestion.emoji}</div>
                     <h2 className="text-xl font-bold text-foreground mb-2">
-                      {currentQuestion.text}
+                      {getQuestionText(currentQuestion.text)}
                     </h2>
                     <p className="text-sm text-muted-foreground">
                       About <span className="text-primary font-semibold">{crushName}</span>

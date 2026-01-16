@@ -23,11 +23,10 @@ interface Prank {
 }
 
 const questions = [
-  { id: "kiss", text: "Have you ever kissed your crush?", emoji: "💋" },
-  { id: "date", text: "Have you been on a date with your crush?", emoji: "🌹" },
+  { id: "date", text: "Do you want to date your crush?", emoji: "💑" },
+  { id: "fake", text: "Would you say yes to a fake relationship?", emoji: "🎭" },
   { id: "dream", text: "Do you dream about your crush?", emoji: "💭" },
-  { id: "stalk", text: "Do you check their social media often?", emoji: "📱" },
-  { id: "jealous", text: "Do you get jealous when they talk to others?", emoji: "😤" },
+  { id: "spark", text: "Do you feel a spark around them?", emoji: "✨" },
   { id: "confess", text: "Have you tried to confess your feelings?", emoji: "💌" },
 ];
 
@@ -115,7 +114,8 @@ const Friendboard = () => {
   };
 
   const handleSnapchatShare = () => {
-    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}`;
+    const stickerUrl = "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/Snap_New/LoveMeter_CA-English.png";
+    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}&sticker=${encodeURIComponent(stickerUrl)}`;
     window.open(url, "_blank");
   };
 
@@ -139,14 +139,14 @@ const Friendboard = () => {
               <HeartIcon size="lg" animated />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2">
-              Friend Board
+              💖 Friend Board
             </h1>
             <p className="text-muted-foreground">
-              See who fell for your trap! 😏
+              See who fell for your trap! 😆
             </p>
             {prank && (
               <p className="text-sm text-primary mt-2">
-                Created by: <span className="font-bold">{prank.creator_name}</span>
+                Trap created by <span className="font-bold">{prank.creator_name}</span>
               </p>
             )}
           </div>
@@ -177,7 +177,7 @@ const Friendboard = () => {
                       <p className="font-bold text-xl text-foreground">{selectedResponse.friend_name}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Their Crush</p>
+                      <p className="text-sm text-muted-foreground mb-1">☕ Secret crush</p>
                       <p className="font-bold text-xl text-primary">{selectedResponse.crush_name}</p>
                     </div>
                   </div>
@@ -297,7 +297,7 @@ const Friendboard = () => {
                           <div>
                             <p className="font-bold text-foreground">{response.friend_name}</p>
                             <p className="text-sm text-primary">
-                              Crush: <span className="font-semibold">{response.crush_name}</span>
+                              ☕ Secret crush: <span className="font-semibold">{response.crush_name}</span>
                             </p>
                           </div>
                         </div>
@@ -364,7 +364,7 @@ const Friendboard = () => {
             <Link to="/">
               <Button variant="ghost" className="gap-2">
                 <ArrowLeft className="w-4 h-4" />
-                Back to Home
+                ← Create another trap
               </Button>
             </Link>
           </div>

@@ -1,4 +1,4 @@
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Heart, Copy, Check, Share2, Users, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
 
 interface Prank {
   id: string;
@@ -92,7 +93,8 @@ const LinkCreated = () => {
   };
 
   const handleSnapchatShare = () => {
-    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}`;
+    const stickerUrl = "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/Snap_New/LoveMeter_CA-English.png";
+    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}&sticker=${encodeURIComponent(stickerUrl)}`;
     window.open(url, "_blank");
   };
 
@@ -115,10 +117,10 @@ const LinkCreated = () => {
               <HeartIcon size="lg" animated />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
-              Your Link is Ready!
+              💖 Your Love Trap Is Ready!
             </h1>
             <p className="text-muted-foreground">
-              Share this link with your friends and watch the magic happen! ✨
+              Share this link with your friends and let the love secrets spill ✨💌
             </p>
           </div>
 
@@ -132,14 +134,17 @@ const LinkCreated = () => {
                 <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
                   <Heart className="w-8 h-8 text-primary" fill="currentColor" />
                 </div>
-                <p className="text-sm text-muted-foreground mb-1">Created by</p>
+                <p className="text-sm text-muted-foreground mb-1">😏 Trap Set By</p>
                 <p className="font-bold text-xl text-foreground">{prank?.creator_name || "Unknown"}</p>
               </div>
 
               <div className="space-y-3">
                 <label className="text-sm font-semibold text-foreground">
-                  Share this link with your friends:
+                  💕 Share this with your friends
                 </label>
+                <p className="text-xs text-muted-foreground">
+                  A fun little quiz for them… a big secret reveal for you 🤭💗
+                </p>
                 <div className="flex gap-2">
                   <Input
                     value={loveLink}
@@ -160,11 +165,11 @@ const LinkCreated = () => {
               <div className="grid grid-cols-2 gap-3">
                 <Button variant="soft" onClick={handleCopy} className="gap-2">
                   <Copy className="w-4 h-4" />
-                  Copy Link
+                  📋 Copy Link
                 </Button>
                 <Button variant="romantic" onClick={handleShare} className="gap-2">
                   <Share2 className="w-4 h-4" />
-                  Share
+                  💌 Share With Friends
                 </Button>
               </div>
 
@@ -211,16 +216,10 @@ const LinkCreated = () => {
                 </div>
               </div>
 
-              <p className="text-center text-sm text-muted-foreground">
-                When your friends click this link, they'll think it's a real "Love Calculator".
-                They'll enter their name, crush's name, and answer questions.
-                Then they'll be surprised to know you got all their secrets! 😏
-              </p>
-
               <Link to={`/friendboard?id=${encodeURIComponent(prankId)}`} className="block">
                 <Button variant="soft" size="lg" className="w-full gap-2">
                   <Users className="w-4 h-4" />
-                  View Friend Board
+                  💕 See Your Friends' Answers
                 </Button>
               </Link>
             </div>
