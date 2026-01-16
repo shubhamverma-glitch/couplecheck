@@ -4,7 +4,7 @@ import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Copy, Check, Share2, ArrowLeft, Users, Loader2 } from "lucide-react";
+import { Heart, Copy, Check, Share2, Users, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -43,20 +43,20 @@ const LinkCreated = () => {
     fetchPrank();
   }, [prankId]);
 
-  const prankLink = `${window.location.origin}/prank?id=${prankId}`;
+  const loveLink = `${window.location.origin}/love?id=${prankId}`;
   
-  const shareText = `💝👩‍❤️‍👨 *本物の愛* or *ただの片思い* ? 👩‍❤️‍👩💝
-🥰 このテストで、本物の愛の相手が誰なのかを知ることが出来ますよ! 🥰
+  const shareText = `💝👩‍❤️‍👨 *Real Love* or *Just a Crush*? 👩‍❤️‍👩💝
+🥰 Take this test to find out who your true love really is! 🥰
 🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩`;
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(prankLink);
+      await navigator.clipboard.writeText(loveLink);
       setCopied(true);
-      toast.success("リンクをコピーしました！友達に共有しよう 💕");
+      toast.success("Link copied! Share it with your friends 💕");
       setTimeout(() => setCopied(false), 3000);
     } catch {
-      toast.error("リンクのコピーに失敗しました");
+      toast.error("Failed to copy link");
     }
   };
 
@@ -64,16 +64,36 @@ const LinkCreated = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "愛の計算機 💕",
+          title: "Love Calculator 💕",
           text: shareText,
-          url: prankLink,
+          url: loveLink,
         });
       } catch {
-        // ユーザーがキャンセルしたか共有に失敗
+        // User cancelled or share failed
       }
     } else {
       handleCopy();
     }
+  };
+
+  const handleWhatsAppShare = () => {
+    const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + loveLink)}`;
+    window.open(url, "_blank");
+  };
+
+  const handleFacebookShare = () => {
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(loveLink)}&quote=${encodeURIComponent(shareText)}`;
+    window.open(url, "_blank");
+  };
+
+  const handleTwitterShare = () => {
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(loveLink)}`;
+    window.open(url, "_blank");
+  };
+
+  const handleSnapchatShare = () => {
+    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}`;
+    window.open(url, "_blank");
   };
 
   if (isLoading) {
@@ -95,10 +115,10 @@ const LinkCreated = () => {
               <HeartIcon size="lg" animated />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
-              リンクの準備完了！
+              Your Link is Ready!
             </h1>
             <p className="text-muted-foreground">
-              このリンクを友達に共有して、魔法を見届けよう！✨
+              Share this link with your friends and watch the magic happen! ✨
             </p>
           </div>
 
@@ -112,17 +132,17 @@ const LinkCreated = () => {
                 <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
                   <Heart className="w-8 h-8 text-primary" fill="currentColor" />
                 </div>
-                <p className="text-sm text-muted-foreground mb-1">イタズラ作成者</p>
-                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "不明"}</p>
+                <p className="text-sm text-muted-foreground mb-1">Created by</p>
+                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "Unknown"}</p>
               </div>
 
               <div className="space-y-3">
                 <label className="text-sm font-semibold text-foreground">
-                  このリンクを友達に共有してください:
+                  Share this link with your friends:
                 </label>
                 <div className="flex gap-2">
                   <Input
-                    value={prankLink}
+                    value={loveLink}
                     readOnly
                     className="text-sm"
                   />
@@ -140,36 +160,70 @@ const LinkCreated = () => {
               <div className="grid grid-cols-2 gap-3">
                 <Button variant="soft" onClick={handleCopy} className="gap-2">
                   <Copy className="w-4 h-4" />
-                  リンクをコピー
+                  Copy Link
                 </Button>
                 <Button variant="romantic" onClick={handleShare} className="gap-2">
                   <Share2 className="w-4 h-4" />
-                  共有する
+                  Share
                 </Button>
               </div>
 
+              {/* Social Share Buttons */}
+              <div className="space-y-3">
+                <p className="text-sm font-semibold text-foreground text-center">Share on:</p>
+                <div className="grid grid-cols-4 gap-2">
+                  <Button 
+                    variant="soft" 
+                    size="sm"
+                    onClick={handleWhatsAppShare}
+                    className="flex flex-col items-center gap-1 h-auto py-3 bg-green-500/10 hover:bg-green-500/20 text-green-600"
+                  >
+                    <span className="text-xl">💬</span>
+                    <span className="text-xs">WhatsApp</span>
+                  </Button>
+                  <Button 
+                    variant="soft" 
+                    size="sm"
+                    onClick={handleFacebookShare}
+                    className="flex flex-col items-center gap-1 h-auto py-3 bg-blue-500/10 hover:bg-blue-500/20 text-blue-600"
+                  >
+                    <span className="text-xl">📘</span>
+                    <span className="text-xs">Facebook</span>
+                  </Button>
+                  <Button 
+                    variant="soft" 
+                    size="sm"
+                    onClick={handleTwitterShare}
+                    className="flex flex-col items-center gap-1 h-auto py-3 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600"
+                  >
+                    <span className="text-xl">🐦</span>
+                    <span className="text-xs">Twitter</span>
+                  </Button>
+                  <Button 
+                    variant="soft" 
+                    size="sm"
+                    onClick={handleSnapchatShare}
+                    className="flex flex-col items-center gap-1 h-auto py-3 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-600"
+                  >
+                    <span className="text-xl">👻</span>
+                    <span className="text-xs">Snapchat</span>
+                  </Button>
+                </div>
+              </div>
+
               <p className="text-center text-sm text-muted-foreground">
-                友達がこのリンクをクリックすると、本物の「愛の計算機」だと思います。
-                彼らは自分の名前、好きな人の名前を入力し、質問に答えます。
-                そして、あなたがすべての秘密を受け取ったことを知ってびっくり！😏
+                When your friends click this link, they'll think it's a real "Love Calculator".
+                They'll enter their name, crush's name, and answer questions.
+                Then they'll be surprised to know you got all their secrets! 😏
               </p>
 
               <Link to={`/friendboard?id=${encodeURIComponent(prankId)}`} className="block">
                 <Button variant="soft" size="lg" className="w-full gap-2">
                   <Users className="w-4 h-4" />
-                  フレンドボードを見る
+                  View Friend Board
                 </Button>
               </Link>
             </div>
-          </div>
-
-          <div className="mt-8 text-center">
-            <Link to="/">
-              <Button variant="ghost" className="gap-2">
-                <ArrowLeft className="w-4 h-4" />
-                別のイタズラを作成
-              </Button>
-            </Link>
           </div>
         </div>
       </div>
