@@ -3,8 +3,9 @@ import { useSearchParams, Link } from "react-router-dom";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import { Button } from "@/components/ui/button";
-import { Heart, ArrowLeft, Users, Eye, Check, X, Loader2 } from "lucide-react";
+import { Heart, ArrowLeft, Users, Eye, Check, X, Loader2, Share2, Copy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface PrankResponse {
   id: string;
@@ -22,12 +23,12 @@ interface Prank {
 }
 
 const questions = [
-  { id: "kiss", text: "好きな人にキスしたことがありますか？", emoji: "💋" },
-  { id: "date", text: "好きな人とデートしたことがありますか？", emoji: "🌹" },
-  { id: "dream", text: "好きな人の夢を見ますか？", emoji: "💭" },
-  { id: "stalk", text: "よくSNSをチェックしますか？", emoji: "📱" },
-  { id: "jealous", text: "他の人と話しているのを見ると嫉妬しますか？", emoji: "😤" },
-  { id: "confess", text: "気持ちを告白しようとしたことがありますか？", emoji: "💌" },
+  { id: "kiss", text: "Have you ever kissed your crush?", emoji: "💋" },
+  { id: "date", text: "Have you been on a date with your crush?", emoji: "🌹" },
+  { id: "dream", text: "Do you dream about your crush?", emoji: "💭" },
+  { id: "stalk", text: "Do you check their social media often?", emoji: "📱" },
+  { id: "jealous", text: "Do you get jealous when they talk to others?", emoji: "😤" },
+  { id: "confess", text: "Have you tried to confess your feelings?", emoji: "💌" },
 ];
 
 const Friendboard = () => {
@@ -37,6 +38,13 @@ const Friendboard = () => {
   const [prank, setPrank] = useState<Prank | null>(null);
   const [selectedResponse, setSelectedResponse] = useState<PrankResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
+
+  const loveLink = `${window.location.origin}/love?id=${prankId}`;
+  
+  const shareText = `💝👩‍❤️‍👨 *Real Love* or *Just a Crush*? 👩‍❤️‍👩💝
+🥰 Take this test to find out who your true love really is! 🥰
+🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩`;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +53,6 @@ const Friendboard = () => {
         return;
       }
 
-      // イタズラ情報を取得
       const { data: prankData } = await supabase
         .from("pranks")
         .select("*")
@@ -56,7 +63,6 @@ const Friendboard = () => {
         setPrank(prankData);
       }
 
-      // 回答を取得
       const { data: responsesData } = await supabase
         .from("prank_responses")
         .select("*")
@@ -74,12 +80,43 @@ const Friendboard = () => {
   }, [prankId]);
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("ja-JP", {
+    return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(loveLink);
+      setCopied(true);
+      toast.success("Link copied! Share it with your friends 💕");
+      setTimeout(() => setCopied(false), 3000);
+    } catch {
+      toast.error("Failed to copy link");
+    }
+  };
+
+  const handleWhatsAppShare = () => {
+    const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + loveLink)}`;
+    window.open(url, "_blank");
+  };
+
+  const handleFacebookShare = () => {
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(loveLink)}&quote=${encodeURIComponent(shareText)}`;
+    window.open(url, "_blank");
+  };
+
+  const handleTwitterShare = () => {
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(loveLink)}`;
+    window.open(url, "_blank");
+  };
+
+  const handleSnapchatShare = () => {
+    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}`;
+    window.open(url, "_blank");
   };
 
   if (isLoading) {
@@ -96,25 +133,25 @@ const Friendboard = () => {
       
       <div className="relative z-10 container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-2xl mx-auto">
-          {/* ヘッダー */}
+          {/* Header */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
               <HeartIcon size="lg" animated />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2">
-              フレンドボード
+              Friend Board
             </h1>
             <p className="text-muted-foreground">
-              誰があなたのイタズラに引っかかったか見よう！😏
+              See who fell for your trap! 😏
             </p>
             {prank && (
               <p className="text-sm text-primary mt-2">
-                イタズラ作成者: <span className="font-bold">{prank.creator_name}</span>
+                Created by: <span className="font-bold">{prank.creator_name}</span>
               </p>
             )}
           </div>
 
-          {/* 選択された回答の詳細 */}
+          {/* Selected Response Detail */}
           {selectedResponse ? (
             <div className="card-romantic rounded-3xl p-8 relative overflow-hidden mb-6">
               <div className="absolute -top-4 -right-4 opacity-20">
@@ -129,18 +166,18 @@ const Friendboard = () => {
                   className="gap-2 mb-4"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  リストに戻る
+                  Back to List
                 </Button>
 
-                {/* 友達と好きな人の情報 */}
+                {/* Friend and Crush Info */}
                 <div className="bg-secondary rounded-xl p-6 text-center">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">友達の名前</p>
+                      <p className="text-sm text-muted-foreground mb-1">Friend's Name</p>
                       <p className="font-bold text-xl text-foreground">{selectedResponse.friend_name}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">好きな人</p>
+                      <p className="text-sm text-muted-foreground mb-1">Their Crush</p>
                       <p className="font-bold text-xl text-primary">{selectedResponse.crush_name}</p>
                     </div>
                   </div>
@@ -149,9 +186,9 @@ const Friendboard = () => {
                   </div>
                 </div>
 
-                {/* 回答 */}
+                {/* Answers */}
                 <div className="space-y-3">
-                  <h3 className="font-bold text-lg text-foreground">回答:</h3>
+                  <h3 className="font-bold text-lg text-foreground">Answers:</h3>
                   {questions.map((q) => (
                     <div 
                       key={q.id}
@@ -167,9 +204,9 @@ const Friendboard = () => {
                           : "bg-red-500/20 text-red-600"
                       }`}>
                         {selectedResponse.answers[q.id] ? (
-                          <><Check className="w-4 h-4" /> はい</>
+                          <><Check className="w-4 h-4" /> Yes</>
                         ) : (
-                          <><X className="w-4 h-4" /> いいえ</>
+                          <><X className="w-4 h-4" /> No</>
                         )}
                       </div>
                     </div>
@@ -177,32 +214,72 @@ const Friendboard = () => {
                 </div>
 
                 <p className="text-xs text-muted-foreground text-center">
-                  送信日時: {formatDate(selectedResponse.submitted_at)}
+                  Submitted: {formatDate(selectedResponse.submitted_at)}
                 </p>
               </div>
             </div>
           ) : (
             <>
-              {/* 回答リスト */}
+              {/* Response List */}
               {responses.length === 0 ? (
                 <div className="card-romantic rounded-3xl p-8 text-center">
                   <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
-                  <h2 className="text-xl font-bold text-foreground mb-2">まだ回答がありません</h2>
+                  <h2 className="text-xl font-bold text-foreground mb-2">No responses yet</h2>
                   <p className="text-muted-foreground mb-6">
-                    イタズラリンクを共有して、友達が引っかかるのを待とう！😄
+                    Share your link and wait for your friends to fall for it! 😄
                   </p>
-                  <Link to="/">
-                    <Button variant="romantic" className="gap-2">
-                      <Heart className="w-4 h-4" fill="currentColor" />
-                      新しいイタズラを作成
+                  
+                  {/* Share Buttons */}
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-4 gap-2">
+                      <Button 
+                        variant="soft" 
+                        size="sm"
+                        onClick={handleWhatsAppShare}
+                        className="flex flex-col items-center gap-1 h-auto py-3 bg-green-500/10 hover:bg-green-500/20 text-green-600"
+                      >
+                        <span className="text-xl">💬</span>
+                        <span className="text-xs">WhatsApp</span>
+                      </Button>
+                      <Button 
+                        variant="soft" 
+                        size="sm"
+                        onClick={handleFacebookShare}
+                        className="flex flex-col items-center gap-1 h-auto py-3 bg-blue-500/10 hover:bg-blue-500/20 text-blue-600"
+                      >
+                        <span className="text-xl">📘</span>
+                        <span className="text-xs">Facebook</span>
+                      </Button>
+                      <Button 
+                        variant="soft" 
+                        size="sm"
+                        onClick={handleTwitterShare}
+                        className="flex flex-col items-center gap-1 h-auto py-3 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600"
+                      >
+                        <span className="text-xl">🐦</span>
+                        <span className="text-xs">Twitter</span>
+                      </Button>
+                      <Button 
+                        variant="soft" 
+                        size="sm"
+                        onClick={handleSnapchatShare}
+                        className="flex flex-col items-center gap-1 h-auto py-3 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-600"
+                      >
+                        <span className="text-xl">👻</span>
+                        <span className="text-xs">Snapchat</span>
+                      </Button>
+                    </div>
+                    <Button variant="soft" onClick={handleCopy} className="w-full gap-2">
+                      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      {copied ? "Copied!" : "Copy Link"}
                     </Button>
-                  </Link>
+                  </div>
                 </div>
               ) : (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-bold text-foreground">
-                      {responses.length}人の友達がイタズラされました！
+                      {responses.length} friend{responses.length > 1 ? "s" : ""} fell for it!
                     </h2>
                   </div>
 
@@ -220,7 +297,7 @@ const Friendboard = () => {
                           <div>
                             <p className="font-bold text-foreground">{response.friend_name}</p>
                             <p className="text-sm text-primary">
-                              好きな人: <span className="font-semibold">{response.crush_name}</span>
+                              Crush: <span className="font-semibold">{response.crush_name}</span>
                             </p>
                           </div>
                         </div>
@@ -235,6 +312,49 @@ const Friendboard = () => {
                       </div>
                     </div>
                   ))}
+
+                  {/* Share Buttons for when there are responses */}
+                  <div className="card-romantic rounded-2xl p-6 mt-6">
+                    <p className="text-sm font-semibold text-foreground text-center mb-4">Share to get more responses:</p>
+                    <div className="grid grid-cols-4 gap-2">
+                      <Button 
+                        variant="soft" 
+                        size="sm"
+                        onClick={handleWhatsAppShare}
+                        className="flex flex-col items-center gap-1 h-auto py-3 bg-green-500/10 hover:bg-green-500/20 text-green-600"
+                      >
+                        <span className="text-xl">💬</span>
+                        <span className="text-xs">WhatsApp</span>
+                      </Button>
+                      <Button 
+                        variant="soft" 
+                        size="sm"
+                        onClick={handleFacebookShare}
+                        className="flex flex-col items-center gap-1 h-auto py-3 bg-blue-500/10 hover:bg-blue-500/20 text-blue-600"
+                      >
+                        <span className="text-xl">📘</span>
+                        <span className="text-xs">Facebook</span>
+                      </Button>
+                      <Button 
+                        variant="soft" 
+                        size="sm"
+                        onClick={handleTwitterShare}
+                        className="flex flex-col items-center gap-1 h-auto py-3 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600"
+                      >
+                        <span className="text-xl">🐦</span>
+                        <span className="text-xs">Twitter</span>
+                      </Button>
+                      <Button 
+                        variant="soft" 
+                        size="sm"
+                        onClick={handleSnapchatShare}
+                        className="flex flex-col items-center gap-1 h-auto py-3 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-600"
+                      >
+                        <span className="text-xl">👻</span>
+                        <span className="text-xs">Snapchat</span>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               )}
             </>
@@ -244,7 +364,7 @@ const Friendboard = () => {
             <Link to="/">
               <Button variant="ghost" className="gap-2">
                 <ArrowLeft className="w-4 h-4" />
-                ホームに戻る
+                Back to Home
               </Button>
             </Link>
           </div>

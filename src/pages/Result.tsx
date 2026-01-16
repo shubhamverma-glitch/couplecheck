@@ -25,11 +25,11 @@ const Result = () => {
       ...data
     };
   } catch {
-    // 無効なデータ
+    // Invalid data
   }
 
   useEffect(() => {
-    // データベースからイタズラ作成者の名前を取得
+    // Fetch prankster name from database
     const fetchPranksterName = async () => {
       if (resultData.prankId) {
         const { data } = await supabase
@@ -46,7 +46,7 @@ const Result = () => {
     
     fetchPranksterName();
     
-    // 少しのサスペンスの後にイタズラを明かす
+    // Reveal the prank after a moment of suspense
     const timer = setTimeout(() => setShowReveal(true), 1500);
     return () => clearTimeout(timer);
   }, []);
@@ -57,18 +57,18 @@ const Result = () => {
       
       <div className="relative z-10 container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-lg mx-auto">
-          {/* 明かす前のローディング状態 */}
+          {/* Loading state before reveal */}
           {!showReveal && (
             <div className="text-center">
               <div className="card-romantic rounded-3xl p-8">
                 <Heart className="w-16 h-16 text-primary mx-auto animate-heartbeat mb-4" fill="currentColor" />
-                <h2 className="text-2xl font-bold text-gradient mb-2">愛を計算中...</h2>
-                <p className="text-muted-foreground">相性を分析しています。お待ちください 💕</p>
+                <h2 className="text-2xl font-bold text-gradient mb-2">Calculating Love...</h2>
+                <p className="text-muted-foreground">Analyzing your compatibility. Please wait 💕</p>
               </div>
             </div>
           )}
 
-          {/* イタズラの公開 */}
+          {/* Prank Reveal */}
           {showReveal && (
             <>
               <div className="text-center mb-8">
@@ -76,10 +76,10 @@ const Result = () => {
                   
                 </div>
                 <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                  {pranksterName}に騙されました！😂
+                  You Got Pranked by {pranksterName}! 😂
                 </h1>
                 <p className="text-muted-foreground">
-                  あなたの名前と好きな人の名前が<span className="text-primary font-bold">{pranksterName}</span>に共有されました
+                  Your name and crush's name have been shared with <span className="text-primary font-bold">{pranksterName}</span>
                 </p>
               </div>
 
@@ -89,49 +89,53 @@ const Result = () => {
                 </div>
 
                 <div className="relative z-10 space-y-6">
-                  {/* かわいいキャラクター/絵文字 */}
+                  {/* Laughing GIF */}
                   <div className="text-center">
-                    <div className="text-8xl mb-4">🙈</div>
+                    <img 
+                      src="https://media.giphy.com/media/Q7ozWVYCR0nyW2rvPW/giphy.gif" 
+                      alt="Laughing"
+                      className="w-32 h-32 mx-auto rounded-2xl object-cover"
+                    />
                   </div>
 
-                  {/* 公開された情報 */}
+                  {/* Revealed Info */}
                   <div className="bg-secondary rounded-xl p-4 space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">あなたの名前:</span>
+                      <span className="text-muted-foreground">Your Name:</span>
                       <span className="font-bold text-foreground">{resultData.friendName}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">好きな人:</span>
+                      <span className="text-muted-foreground">Your Crush:</span>
                       <span className="font-bold text-primary">{resultData.crushName}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">イタズラした人:</span>
+                      <span className="text-muted-foreground">Pranked by:</span>
                       <span className="font-bold text-foreground">{pranksterName}</span>
                     </div>
                   </div>
 
                   <div className="text-center py-4">
                     <p className="text-lg font-semibold text-foreground mb-2">
-                      😏 {pranksterName}があなたの秘密の片思いを知っています！
+                      😏 {pranksterName} now knows your secret crush!
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      心配しないで、これはただの楽しいイタズラです！今度はあなたの番です！
+                      Don't worry, it's just a fun prank! Now it's your turn!
                     </p>
                   </div>
 
-                  {/* 自分のイタズラを作成するCTA */}
+                  {/* CTA to create own prank */}
                   <div className="space-y-4">
                     <div className="bg-primary/10 rounded-xl p-4 text-center my-[20px]">
                       <Sparkles className="w-6 h-6 text-primary mx-auto mb-2" />
                       <p className="text-sm text-foreground font-medium">
-                        今すぐ登録して友達にイタズラしよう！
+                        Create your own link and prank your friends!
                       </p>
                     </div>
 
                     <Link to="/">
                       <Button variant="romantic" size="lg" className="w-full gap-2">
                         <Heart className="w-5 h-5" fill="currentColor" />
-                        自分のイタズラリンクを作成
+                        Create Your Own Love Trap
                       </Button>
                     </Link>
                   </div>
@@ -142,7 +146,7 @@ const Result = () => {
                 <Link to="/">
                   <Button variant="ghost" className="gap-2">
                     <Home className="w-4 h-4" />
-                    ホームへ戻る
+                    Back to Home
                   </Button>
                 </Link>
               </div>
