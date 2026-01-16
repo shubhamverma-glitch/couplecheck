@@ -163,20 +163,18 @@ const LinkCreated = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <Button variant="soft" onClick={handleCopy} className="gap-2">
-                  <Copy className="w-4 h-4" />
+                <Button variant="soft" onClick={handleCopy}>
                   📋 Copy Link
                 </Button>
-                <Button variant="romantic" onClick={handleShare} className="gap-2">
-                  <Share2 className="w-4 h-4" />
-                  💌 Share With Friends
+                <Button variant="romantic" onClick={handleShare}>
+                  💌 Share
                 </Button>
               </div>
 
               {/* Social Share Buttons */}
               <div className="space-y-3">
                 <p className="text-sm font-semibold text-foreground text-center">Share on:</p>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-3 gap-2">
                   <Button 
                     variant="soft" 
                     size="sm"
@@ -185,15 +183,6 @@ const LinkCreated = () => {
                   >
                     <span className="text-xl">💬</span>
                     <span className="text-xs">WhatsApp</span>
-                  </Button>
-                  <Button 
-                    variant="soft" 
-                    size="sm"
-                    onClick={handleFacebookShare}
-                    className="flex flex-col items-center gap-1 h-auto py-3 bg-blue-500/10 hover:bg-blue-500/20 text-blue-600"
-                  >
-                    <span className="text-xl">📘</span>
-                    <span className="text-xs">Facebook</span>
                   </Button>
                   <Button 
                     variant="soft" 
