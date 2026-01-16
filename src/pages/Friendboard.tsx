@@ -196,14 +196,10 @@ const Friendboard = () => {
                   
                   {/* Share Buttons */}
                   <div className="space-y-4">
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-3 gap-2">
                       <Button variant="soft" size="sm" onClick={handleWhatsAppShare} className="flex flex-col items-center gap-1 h-auto py-3 bg-green-500/10 hover:bg-green-500/20 text-green-600">
                         <span className="text-xl">💬</span>
                         <span className="text-xs">WhatsApp</span>
-                      </Button>
-                      <Button variant="soft" size="sm" onClick={handleFacebookShare} className="flex flex-col items-center gap-1 h-auto py-3 bg-blue-500/10 hover:bg-blue-500/20 text-blue-600">
-                        <span className="text-xl">📘</span>
-                        <span className="text-xs">Facebook</span>
                       </Button>
                       <Button variant="soft" size="sm" onClick={handleTwitterShare} className="flex flex-col items-center gap-1 h-auto py-3 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600">
                         <span className="text-xl">🐦</span>
@@ -214,9 +210,8 @@ const Friendboard = () => {
                         <span className="text-xs">Snapchat</span>
                       </Button>
                     </div>
-                    <Button variant="soft" onClick={handleCopy} className="w-full gap-2">
-                      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                      {copied ? "Copied!" : "Copy Link"}
+                    <Button variant="soft" onClick={handleCopy} className="w-full">
+                      {copied ? "Copied!" : "📋 Copy Link"}
                     </Button>
                   </div>
                 </div> : <div className="space-y-4">
@@ -253,14 +248,10 @@ const Friendboard = () => {
                   {/* Share Buttons for when there are responses */}
                   <div className="card-romantic rounded-2xl p-6 mt-6">
                     <p className="text-sm font-semibold text-foreground text-center mb-4">Share to get more responses:</p>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-3 gap-2">
                       <Button variant="soft" size="sm" onClick={handleWhatsAppShare} className="flex flex-col items-center gap-1 h-auto py-3 bg-green-500/10 hover:bg-green-500/20 text-green-600">
                         <span className="text-xl">💬</span>
                         <span className="text-xs">WhatsApp</span>
-                      </Button>
-                      <Button variant="soft" size="sm" onClick={handleFacebookShare} className="flex flex-col items-center gap-1 h-auto py-3 bg-blue-500/10 hover:bg-blue-500/20 text-blue-600">
-                        <span className="text-xl">📘</span>
-                        <span className="text-xs">Facebook</span>
                       </Button>
                       <Button variant="soft" size="sm" onClick={handleTwitterShare} className="flex flex-col items-center gap-1 h-auto py-3 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600">
                         <span className="text-xl">🐦</span>
