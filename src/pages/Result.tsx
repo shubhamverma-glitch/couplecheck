@@ -3,7 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import { Button } from "@/components/ui/button";
-import { Heart, Sparkles, Home } from "lucide-react";
+import { Heart, Sparkles, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const Result = () => {
@@ -76,10 +76,10 @@ const Result = () => {
                   
                 </div>
                 <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                  You Got Pranked by {pranksterName}! 😂
+                  IT WAS A TRAP 😭
                 </h1>
                 <p className="text-muted-foreground">
-                  Your name and crush's name have been shared with <span className="text-primary font-bold">{pranksterName}</span>
+                  Your little secret didn't stay so secret 😏
                 </p>
               </div>
 
@@ -101,25 +101,21 @@ const Result = () => {
                   {/* Revealed Info */}
                   <div className="bg-secondary rounded-xl p-4 space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Your Name:</span>
+                      <span className="text-muted-foreground">👀 Your Name:</span>
                       <span className="font-bold text-foreground">{resultData.friendName}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Your Crush:</span>
                       <span className="font-bold text-primary">{resultData.crushName}</span>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Pranked by:</span>
-                      <span className="font-bold text-foreground">{pranksterName}</span>
-                    </div>
                   </div>
 
                   <div className="text-center py-4">
                     <p className="text-lg font-semibold text-foreground mb-2">
-                      😏 {pranksterName} now knows your secret crush!
+                      😳 {pranksterName} knows your secret crush!
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Don't worry, it's just a fun prank! Now it's your turn!
+                      Don't worry, this is just a fun trap! Now it's your turn!
                     </p>
                   </div>
 
@@ -128,27 +124,25 @@ const Result = () => {
                     <div className="bg-primary/10 rounded-xl p-4 text-center my-[20px]">
                       <Sparkles className="w-6 h-6 text-primary mx-auto mb-2" />
                       <p className="text-sm text-foreground font-medium">
-                        Create your own link and prank your friends!
+                        Time to trap your friends back 😈🔥
                       </p>
                     </div>
 
                     <Link to="/">
                       <Button variant="romantic" size="lg" className="w-full gap-2">
                         <Heart className="w-5 h-5" fill="currentColor" />
-                        Create Your Own Love Trap
+                        🔥 Create Your Own Trap
+                      </Button>
+                    </Link>
+
+                    <Link to="/">
+                      <Button variant="ghost" size="lg" className="w-full gap-2">
+                        <ArrowLeft className="w-4 h-4" />
+                        ← I want revenge
                       </Button>
                     </Link>
                   </div>
                 </div>
-              </div>
-
-              <div className="mt-8 text-center">
-                <Link to="/">
-                  <Button variant="ghost" className="gap-2">
-                    <Home className="w-4 h-4" />
-                    Back to Home
-                  </Button>
-                </Link>
               </div>
             </>
           )}

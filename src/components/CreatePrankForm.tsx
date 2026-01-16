@@ -49,23 +49,23 @@ const CreatePrankForm = () => {
         <div className="relative z-10">
           <div className="flex items-center justify-center gap-2 mb-6">
             <HeartIcon size="md" animated />
-            <h2 className="text-2xl font-bold text-gradient">Create Your Link</h2>
+            <h2 className="text-2xl font-bold text-gradient">❤️ Create a Trap ❤️</h2>
             <HeartIcon size="md" animated />
           </div>
 
           <p className="text-center text-muted-foreground mb-8">
-            Enter your info to create a love trap link. Share it with friends and discover their crush's name! 💕
+            Add your name, share the link, and watch the secrets unfold 😍💌
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
-                Your Name
+                ✨ Your Name
               </label>
               <Input
                 type="text"
-                placeholder="Enter your name..."
+                placeholder="Type your name here"
                 value={yourName}
                 onChange={(e) => setYourName(e.target.value)}
                 required
@@ -81,7 +81,7 @@ const CreatePrankForm = () => {
               disabled={isLoading}
             >
               <Heart className="w-5 h-5" fill="currentColor" />
-              {isLoading ? "Creating..." : "Create Love Trap Link"}
+              {isLoading ? "Creating..." : "Create Love Trap"}
               <Sparkles className="w-5 h-5" />
             </Button>
           </form>

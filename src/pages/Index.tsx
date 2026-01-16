@@ -21,9 +21,7 @@ const Index = () => {
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Create a fun link and discover what your friends
-              <span className="text-primary font-semibold"> really think </span> 
-              about their crush! 💕
+              A sweet little trap to find out who they like 💕
             </p>
           </div>
 
@@ -35,7 +33,7 @@ const Index = () => {
           <div className="mt-16 text-center">
             <div className="flex items-center justify-center gap-2 text-muted-foreground">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm">Made with love for fun pranks</span>
+              <span className="text-sm">Made with love for fun traps</span>
               <Sparkles className="w-4 h-4 text-primary" />
             </div>
           </div>
