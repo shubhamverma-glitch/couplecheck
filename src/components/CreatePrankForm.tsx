@@ -48,9 +48,7 @@ const CreatePrankForm = () => {
             <HeartIcon size="md" animated />
           </div>
 
-          <p className="text-center text-muted-foreground mb-8">
-            Enter your info to create a love trap link. Share it with friends and discover their crush's name! 💕
-          </p>
+          <p className="text-center text-muted-foreground mb-8">Enter your name to create your link. Share it with friends and know their crush's name! 💕</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
