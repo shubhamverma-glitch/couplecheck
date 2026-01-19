@@ -23,11 +23,11 @@ const Index = () => {
             </div>
 
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              <span className="text-gradient">Love Trap</span>
+              <span className="text-gradient">ラブトラップ</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              <span className="text-primary font-semibold">A sweet little prank to find out who do your Friends like 💕</span>
+              <span className="text-primary font-semibold">友達の好きな人をこっそり知れる、ちょっとしたイタズラ 💕</span>
             </p>
           </div>
 
@@ -38,7 +38,7 @@ const Index = () => {
           <div className="mt-16 text-center">
             <div className="flex items-center justify-center gap-2 text-muted-foreground">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm">Made with love for fun pranks</span>
+              <span className="text-sm">楽しいイタズラのために愛を込めて作りました</span>
               <Sparkles className="w-4 h-4 text-primary" />
             </div>
           </div>

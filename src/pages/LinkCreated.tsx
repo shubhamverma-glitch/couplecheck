@@ -50,18 +50,18 @@ const LinkCreated = () => {
 
   const loveLink = `${window.location.origin}/love?id=${prankId}`;
   
-  const shareText = `💝👩‍❤️‍👨 *Real Love* or *Just a Crush*? 👩‍❤️‍👩💝
-🥰 Take this test to find out who your true love really is! 🥰
+  const shareText = `💝👩‍❤️‍👨 *本当の愛*か*ただの片思い*か？ 👩‍❤️‍👩💝
+🥰 このテストで本当の恋の相手を見つけよう！ 🥰
 🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩`;
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(loveLink);
       setCopied(true);
-      toast.success("Link copied! Share it with your friends 💕");
+      toast.success("リンクをコピーしました！友達に共有しよう 💕");
       setTimeout(() => setCopied(false), 3000);
     } catch {
-      toast.error("Failed to copy link");
+      toast.error("リンクのコピーに失敗しました");
     }
   };
 
@@ -69,7 +69,7 @@ const LinkCreated = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Love Calculator 💕",
+          title: "恋愛診断 💕",
           text: shareText,
           url: loveLink,
         });
@@ -121,10 +121,10 @@ const LinkCreated = () => {
               <HeartIcon size="lg" animated />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
-              💖 Your Love Trap Is Ready!
+              💖 ラブトラップ完成！
             </h1>
             <p className="text-muted-foreground">
-              Share this link with your friends and let the love secrets spill ✨💌
+              このリンクを友達に共有して、恋の秘密を暴いちゃおう ✨💌
             </p>
           </div>
 
@@ -138,16 +138,16 @@ const LinkCreated = () => {
                 <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
                   <Heart className="w-8 h-8 text-primary" fill="currentColor" />
                 </div>
-                <p className="text-sm text-muted-foreground mb-1">😏 Trap Set By</p>
-                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "Unknown"}</p>
+                <p className="text-sm text-muted-foreground mb-1">😏 トラップ作成者</p>
+                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "不明"}</p>
               </div>
 
               <div className="space-y-3">
                 <label className="text-sm font-semibold text-foreground">
-                  💕 Share this with your friends
+                  💕 友達に共有しよう
                 </label>
                 <p className="text-xs text-muted-foreground">
-                  A fun little quiz for them… a big secret reveal for you 🤭💗
+                  友達には楽しいクイズ…あなたには大きな秘密の暴露 🤭💗
                 </p>
                 <div className="flex gap-2">
                   <Input
@@ -168,16 +168,16 @@ const LinkCreated = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <Button variant="soft" onClick={handleCopy}>
-                  📋 Copy Link
+                  📋 リンクをコピー
                 </Button>
                 <Button variant="romantic" onClick={handleShare}>
-                  💌 Share
+                  💌 シェア
                 </Button>
               </div>
 
               {/* Social Share Buttons */}
               <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground text-center">Share on:</p>
+                <p className="text-sm font-semibold text-foreground text-center">シェア先:</p>
                 <div className="grid grid-cols-3 gap-2">
                   <Button 
                     variant="soft" 
@@ -212,7 +212,7 @@ const LinkCreated = () => {
               <Link to={`/friendboard?id=${encodeURIComponent(prankId)}`} className="block">
                 <Button variant="soft" size="lg" className="w-full gap-2">
                   <Users className="w-4 h-4" />
-                  💕 See Your Friends' Answers
+                  💕 友達の回答を見る
                 </Button>
               </Link>
             </div>

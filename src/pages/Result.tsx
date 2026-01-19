@@ -66,8 +66,8 @@ const Result = () => {
             <div className="text-center">
               <div className="card-romantic rounded-3xl p-8">
                 <Heart className="w-16 h-16 text-primary mx-auto animate-heartbeat mb-4" fill="currentColor" />
-                <h2 className="text-2xl font-bold text-gradient mb-2">Calculating Love...</h2>
-                <p className="text-muted-foreground">Analyzing your compatibility. Please wait 💕</p>
+                <h2 className="text-2xl font-bold text-gradient mb-2">相性を計算中...</h2>
+                <p className="text-muted-foreground">あなたの相性を分析しています。少々お待ちください 💕</p>
               </div>
             </div>
           )}
@@ -80,10 +80,10 @@ const Result = () => {
                   
                 </div>
                 <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                  IT WAS A TRAP 😭
+                  トラップでした 😭
                 </h1>
                 <p className="text-muted-foreground">
-                  Your little secret didn't stay so secret 😏
+                  あなたの秘密、バレちゃいました 😏
                 </p>
               </div>
 
@@ -97,7 +97,7 @@ const Result = () => {
                   <div className="text-center">
                     <img 
                       src="https://media.giphy.com/media/Q7ozWVYCR0nyW2rvPW/giphy.gif" 
-                      alt="Laughing"
+                      alt="笑い"
                       className="w-32 h-32 mx-auto rounded-2xl object-cover"
                     />
                   </div>
@@ -105,21 +105,21 @@ const Result = () => {
                   {/* Revealed Info */}
                   <div className="bg-secondary rounded-xl p-4 space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">👀 Your Name:</span>
+                      <span className="text-muted-foreground">👀 あなたの名前:</span>
                       <span className="font-bold text-foreground">{resultData.friendName}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Your Crush:</span>
+                      <span className="text-muted-foreground">あなたの好きな人:</span>
                       <span className="font-bold text-primary">{resultData.crushName}</span>
                     </div>
                   </div>
 
                   <div className="text-center py-4">
                     <p className="text-lg font-semibold text-foreground mb-2">
-                      😳 {pranksterName} knows your secret crush!
+                      😳 {pranksterName}があなたの秘密の好きな人を知っちゃった！
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Don't worry, this is just a fun trap! Now it's your turn!
+                      大丈夫、これはただの楽しいトラップだよ！今度はあなたの番！
                     </p>
                   </div>
 
@@ -128,20 +128,20 @@ const Result = () => {
                     <div className="bg-primary/10 rounded-xl p-4 text-center my-[20px]">
                       <Sparkles className="w-6 h-6 text-primary mx-auto mb-2" />
                       <p className="text-sm text-foreground font-medium">
-                        Time to trap your friends back 😈🔥
+                        今度は友達をトラップにかける番 😈🔥
                       </p>
                     </div>
 
                     <Link to="/">
                       <Button variant="romantic" size="lg" className="w-full gap-2">
                         <Heart className="w-5 h-5" fill="currentColor" />
-                        🔥 Create Your Own Trap
+                        🔥 自分のトラップを作る
                       </Button>
                     </Link>
 
                     <Link to="/">
                       <Button variant="ghost" size="lg" className="w-full gap-2">
-                        I want revenge
+                        仕返ししたい
                       </Button>
                     </Link>
                   </div>
