@@ -13,15 +13,15 @@ export default {
   		}
   	},
   	extend: {
-  		fontFamily: {
-  			display: [
-  				'Fredoka',
-  				'sans-serif'
-  			],
-  			body: [
-  				'Quicksand',
-  				'sans-serif'
-  			],
+		fontFamily: {
+			display: [
+				'Source Sans Pro',
+				'sans-serif'
+			],
+			body: [
+				'Source Sans Pro',
+				'sans-serif'
+			],
   			sans: [
   				'Poppins',
   				'ui-sans-serif',
