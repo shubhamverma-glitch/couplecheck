@@ -15,11 +15,11 @@ interface Question {
 }
 
 const questions: Question[] = [
-  { id: "date", text: "Do you want to date {CRUSH_NAME}?", emoji: "💑" },
-  { id: "fake", text: "If {CRUSH_NAME} asked you for a fake relationship, would you say yes?", emoji: "🎭" },
-  { id: "dream", text: "Do you dream about {CRUSH_NAME}?", emoji: "💭" },
-  { id: "spark", text: "Do you feel a spark when you're around them, even in small moments?", emoji: "✨" },
-  { id: "confess", text: "Have you ever tried to confess your feelings to {CRUSH_NAME}?", emoji: "💌" },
+  { id: "date", text: "{CRUSH_NAME}とデートしたい？", emoji: "💑" },
+  { id: "fake", text: "もし{CRUSH_NAME}が偽の恋人になってほしいと言ったら、OKする？", emoji: "🎭" },
+  { id: "dream", text: "{CRUSH_NAME}の夢を見る？", emoji: "💭" },
+  { id: "spark", text: "一緒にいるとき、小さな瞬間でもドキドキする？", emoji: "✨" },
+  { id: "confess", text: "{CRUSH_NAME}に告白しようとしたことある？", emoji: "💌" },
 ];
 
 const Prank = () => {
@@ -97,7 +97,7 @@ const Prank = () => {
         navigate(`/result?data=${encodeURIComponent(resultData)}`);
       } catch (error) {
         console.error("Error saving response:", error);
-        toast.error("Failed to save your response. Please try again.");
+        toast.error("回答の保存に失敗しました。もう一度お試しください。");
         setIsSubmitting(false);
       }
     }
@@ -125,8 +125,8 @@ const Prank = () => {
         <FloatingHearts />
         <div className="relative z-10 container mx-auto px-4 py-20 text-center">
           <HeartIcon size="lg" animated />
-          <h1 className="text-2xl font-bold mt-4 mb-2">Link Not Found</h1>
-          <p className="text-muted-foreground">This link is invalid or has expired.</p>
+          <h1 className="text-2xl font-bold mt-4 mb-2">リンクが見つかりません</h1>
+          <p className="text-muted-foreground">このリンクは無効か、期限切れです。</p>
         </div>
       </div>
     );
@@ -143,8 +143,8 @@ const Prank = () => {
             <div className="flex items-center justify-center mb-4">
               <HeartIcon size="lg" animated />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2">💖 Love Calculator</h1>
-            <p className="text-muted-foreground">Find out how strong your love really is 💘</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2">💖 恋愛診断</h1>
+            <p className="text-muted-foreground">あなたの恋の強さを確かめよう 💘</p>
           </div>
 
           <div className="card-romantic rounded-3xl p-8 relative overflow-hidden">
@@ -158,16 +158,16 @@ const Prank = () => {
                 <form onSubmit={handleInfoSubmit} className="space-y-6">
                   <div className="text-center mb-6">
                     <Sparkles className="w-10 h-10 text-primary mx-auto mb-3" />
-                    <h2 className="text-xl font-bold">Welcome!</h2>
-                    <p className="text-muted-foreground text-sm">Let's calculate your love match 💘</p>
+                    <h2 className="text-xl font-bold">ようこそ！</h2>
+                    <p className="text-muted-foreground text-sm">あなたの恋愛相性を診断しよう 💘</p>
                   </div>
 
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-foreground">Your name</label>
+                      <label className="text-sm font-semibold text-foreground">あなたの名前</label>
                       <Input
                         type="text"
-                        placeholder="Type your name here"
+                        placeholder="ここに名前を入力してね"
                         value={friendName}
                         onChange={(e) => setFriendName(e.target.value)}
                         required
@@ -182,10 +182,10 @@ const Prank = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-foreground">What's the name of your crush? 😁</label>
+                      <label className="text-sm font-semibold text-foreground">好きな人の名前は？ 😁</label>
                       <Input
                         type="text"
-                        placeholder="Type your crush's name 👀"
+                        placeholder="好きな人の名前を入力してね 👀"
                         value={crushName}
                         onChange={(e) => setCrushName(e.target.value)}
                         required
@@ -195,7 +195,7 @@ const Prank = () => {
                   </div>
 
                   <Button type="submit" variant="romantic" size="lg" className="w-full gap-2">
-                    😍 Check the Love Score
+                    😍 相性をチェック
                     <Heart className="w-5 h-5" fill="currentColor" />
                   </Button>
                 </form>
@@ -208,7 +208,7 @@ const Prank = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">
-                        Question {currentQuestionIndex + 1} / {questions.length}
+                        質問 {currentQuestionIndex + 1} / {questions.length}
                       </span>
                       <span className="text-primary font-semibold">{Math.round(progress)}%</span>
                     </div>
@@ -224,7 +224,7 @@ const Prank = () => {
                     <div className="text-5xl mb-4">{currentQuestion.emoji}</div>
                     <h2 className="text-xl font-bold text-foreground mb-2">{getQuestionText(currentQuestion.text)}</h2>
                     <p className="text-sm text-muted-foreground">
-                      About <span className="text-primary font-semibold">{crushName}</span>
+                      <span className="text-primary font-semibold">{crushName}</span>について
                     </p>
                   </div>
 
@@ -237,7 +237,7 @@ const Prank = () => {
                       disabled={isSubmitting}
                     >
                       <X className="w-5 h-5" />
-                      No
+                      いいえ
                     </Button>
                     <Button
                       variant="romantic"
@@ -247,7 +247,7 @@ const Prank = () => {
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Check className="w-5 h-5" />}
-                      Yes
+                      はい
                     </Button>
                   </div>
                 </div>
