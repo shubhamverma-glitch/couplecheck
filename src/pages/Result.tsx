@@ -141,7 +141,7 @@ const Result = () => {
 
                     <Link to="/">
                       <Button variant="ghost" size="lg" className="w-full gap-2">
-                        <-- I want revenge
+                        I want revenge
                       </Button>
                     </Link>
                   </div>
