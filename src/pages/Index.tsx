@@ -18,7 +18,7 @@ const Index = () => {
               <span className="text-gradient">Love Trap</span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">A sweet little trap to find out who do your friends like! 💕<span className="text-primary font-semibold"> really think </span> 
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">​<span className="text-primary font-semibold"> really think </span> 
               about their crush! 💕
             </p>
           </div>
