@@ -10,9 +10,10 @@ const Index = () => {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: "instruction_page" });
   }, []);
-  return <div className="min-h-screen relative overflow-hidden">
+  return (
+    <div className="min-h-screen relative overflow-hidden">
       <FloatingHearts />
-      
+
       <div className="relative z-10">
         {/* Hero Section */}
         <div className="container mx-auto px-4 py-12 md:py-20">
@@ -20,19 +21,20 @@ const Index = () => {
             <div className="flex items-center justify-center gap-3 mb-4">
               <HeartIcon size="lg" animated />
             </div>
-            
+
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
               <span className="text-gradient">Love Trap</span>
             </h1>
-            
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">​<span className="text-primary font-semibold"> really think </span> 
-              about their crush! 💕
+
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              ​
+              <span className="text-primary font-semibold"> A sweet little prank to find out who do your Friends </span>{" "}
+              like 💕really think about their crush! 💕
             </p>
           </div>
 
           {/* Main Form */}
           <CreatePrankForm />
-
 
           {/* Footer */}
           <div className="mt-16 text-center">
@@ -44,6 +46,7 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 export default Index;
