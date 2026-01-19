@@ -26,7 +26,7 @@ const Prank = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const prankId = searchParams.get("id") || "";
-  
+
   const [step, setStep] = useState<"loading" | "info" | "questions">("loading");
   const [friendName, setFriendName] = useState("");
   const [crushName, setCrushName] = useState("");
@@ -47,11 +47,7 @@ const Prank = () => {
         return;
       }
 
-      const { data, error } = await supabase
-        .from("pranks")
-        .select("id")
-        .eq("id", prankId)
-        .maybeSingle();
+      const { data, error } = await supabase.from("pranks").select("id").eq("id", prankId).maybeSingle();
 
       if (error || !data) {
         setPrankExists(false);
@@ -73,31 +69,31 @@ const Prank = () => {
     const currentQuestion = questions[currentQuestionIndex];
     const newAnswers = { ...answers, [currentQuestion.id]: answer };
     setAnswers(newAnswers);
-    
+
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       // Save to database
       setIsSubmitting(true);
       try {
-        const { error } = await supabase
-          .from("prank_responses")
-          .insert({
-            prank_id: prankId,
-            friend_name: friendName.trim(),
-            crush_name: crushName.trim(),
-            answers: newAnswers,
-          });
+        const { error } = await supabase.from("prank_responses").insert({
+          prank_id: prankId,
+          friend_name: friendName.trim(),
+          crush_name: crushName.trim(),
+          answers: newAnswers,
+        });
 
         if (error) throw error;
 
         // Navigate to result
-        const resultData = btoa(JSON.stringify({
-          prankId,
-          friendName,
-          crushName,
-          answers: newAnswers,
-        }));
+        const resultData = btoa(
+          JSON.stringify({
+            prankId,
+            friendName,
+            crushName,
+            answers: newAnswers,
+          }),
+        );
         navigate(`/result?data=${encodeURIComponent(resultData)}`);
       } catch (error) {
         console.error("Error saving response:", error);
@@ -139,7 +135,7 @@ const Prank = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <FloatingHearts />
-      
+
       <div className="relative z-10 container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-lg mx-auto">
           {/* Header */}
@@ -147,12 +143,8 @@ const Prank = () => {
             <div className="flex items-center justify-center mb-4">
               <HeartIcon size="lg" animated />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2">
-              💖 Love Calculator
-            </h1>
-            <p className="text-muted-foreground">
-              Find out how strong your love really is 💘
-            </p>
+            <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2">💖 Love Calculator</h1>
+            <p className="text-muted-foreground">Find out how strong your love really is 💘</p>
           </div>
 
           <div className="card-romantic rounded-3xl p-8 relative overflow-hidden">
@@ -167,16 +159,12 @@ const Prank = () => {
                   <div className="text-center mb-6">
                     <Sparkles className="w-10 h-10 text-primary mx-auto mb-3" />
                     <h2 className="text-xl font-bold">Welcome!</h2>
-                    <p className="text-muted-foreground text-sm">
-                      Let's calculate your love match 💘
-                    </p>
+                    <p className="text-muted-foreground text-sm">Let's calculate your love match 💘</p>
                   </div>
 
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-foreground">
-                        Your name
-                      </label>
+                      <label className="text-sm font-semibold text-foreground">Your name</label>
                       <Input
                         type="text"
                         placeholder="Type your name here"
@@ -194,12 +182,10 @@ const Prank = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-foreground">
-                        What's the name of your crush? 😁
-                      </label>
+                      <label className="text-sm font-semibold text-foreground">What's the name of your crush? 😁</label>
                       <Input
                         type="text"
-                        placeholder="Spill the name 👀"
+                        placeholder="Type your crush's name 👀"
                         value={crushName}
                         onChange={(e) => setCrushName(e.target.value)}
                         required
@@ -221,11 +207,13 @@ const Prank = () => {
                   {/* Progress Bar */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Question {currentQuestionIndex + 1} / {questions.length}</span>
+                      <span className="text-muted-foreground">
+                        Question {currentQuestionIndex + 1} / {questions.length}
+                      </span>
                       <span className="text-primary font-semibold">{Math.round(progress)}%</span>
                     </div>
                     <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 ease-out rounded-full"
                         style={{ width: `${progress}%` }}
                       />
@@ -234,18 +222,16 @@ const Prank = () => {
 
                   <div className="text-center py-8">
                     <div className="text-5xl mb-4">{currentQuestion.emoji}</div>
-                    <h2 className="text-xl font-bold text-foreground mb-2">
-                      {getQuestionText(currentQuestion.text)}
-                    </h2>
+                    <h2 className="text-xl font-bold text-foreground mb-2">{getQuestionText(currentQuestion.text)}</h2>
                     <p className="text-sm text-muted-foreground">
                       About <span className="text-primary font-semibold">{crushName}</span>
                     </p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <Button 
-                      variant="soft" 
-                      size="lg" 
+                    <Button
+                      variant="soft"
+                      size="lg"
                       onClick={() => handleAnswer(false)}
                       className="gap-2"
                       disabled={isSubmitting}
@@ -253,18 +239,14 @@ const Prank = () => {
                       <X className="w-5 h-5" />
                       No
                     </Button>
-                    <Button 
-                      variant="romantic" 
-                      size="lg" 
+                    <Button
+                      variant="romantic"
+                      size="lg"
                       onClick={() => handleAnswer(true)}
                       className="gap-2"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                      ) : (
-                        <Check className="w-5 h-5" />
-                      )}
+                      {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Check className="w-5 h-5" />}
                       Yes
                     </Button>
                   </div>
