@@ -57,6 +57,10 @@ const Friendboard = () => {
 🥰 Take this test to find out who your true love really is! 🥰
 🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩`;
   useEffect(() => {
+    // Fire friend_board event when user lands on friendboard page
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "friend_board" });
+
     const fetchData = async () => {
       if (!prankId) {
         setIsLoading(false);

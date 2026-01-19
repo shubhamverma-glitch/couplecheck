@@ -1,8 +1,15 @@
+import { useEffect } from "react";
 import FloatingHearts from "@/components/FloatingHearts";
 import CreatePrankForm from "@/components/CreatePrankForm";
 import HeartIcon from "@/components/HeartIcon";
 import { Sparkles } from "lucide-react";
+
 const Index = () => {
+  useEffect(() => {
+    // Fire instruction_page event when user lands on start page
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "instruction_page" });
+  }, []);
   return <div className="min-h-screen relative overflow-hidden">
       <FloatingHearts />
       
