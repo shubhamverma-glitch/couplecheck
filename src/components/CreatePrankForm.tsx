@@ -44,11 +44,11 @@ const CreatePrankForm = () => {
         <div className="relative z-10">
           <div className="flex items-center justify-center gap-2 mb-6">
             <HeartIcon size="md" animated />
-            <h2 className="text-2xl font-bold text-gradient">Create a Trap</h2>
+            <h2 className="text-2xl font-bold text-gradient">​Create Your  Trap        </h2>
             <HeartIcon size="md" animated />
           </div>
 
-          <p className="text-center text-muted-foreground mb-8">Enter your name to create your link. Share it with friends and know their crush's name! 💕</p>
+          <p className="text-center text-muted-foreground mb-8">Enter your name to create your link. Share it with friends and let them fall in this trap! 💕</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
