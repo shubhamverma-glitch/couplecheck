@@ -23,6 +23,10 @@ const LinkCreated = () => {
   const prankId = searchParams.get("id") || "";
 
   useEffect(() => {
+    // Fire quiz_completion event when user creates their link
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "quiz_completion" });
+
     const fetchPrank = async () => {
       if (!prankId) {
         setIsLoading(false);

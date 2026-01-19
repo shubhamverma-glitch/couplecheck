@@ -3,7 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import { Button } from "@/components/ui/button";
-import { Heart, Sparkles, ArrowLeft } from "lucide-react";
+import { Heart, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const Result = () => {
@@ -29,6 +29,10 @@ const Result = () => {
   }
 
   useEffect(() => {
+    // Fire friend_result event when friend sees result
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "friend_result" });
+
     // Fetch prankster name from database
     const fetchPranksterName = async () => {
       if (resultData.prankId) {
@@ -137,8 +141,7 @@ const Result = () => {
 
                     <Link to="/">
                       <Button variant="ghost" size="lg" className="w-full gap-2">
-                        <ArrowLeft className="w-4 h-4" />
-                        ← I want revenge
+                        I want revenge
                       </Button>
                     </Link>
                   </div>

@@ -36,6 +36,10 @@ const Prank = () => {
   const [prankExists, setPrankExists] = useState(true);
 
   useEffect(() => {
+    // Fire user_friend event when friend lands on love page
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "user_friend" });
+
     const checkPrank = async () => {
       if (!prankId) {
         setPrankExists(false);
