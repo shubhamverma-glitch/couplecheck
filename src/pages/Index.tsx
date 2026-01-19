@@ -27,9 +27,7 @@ const Index = () => {
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              ​
-              <span className="text-primary font-semibold"> A sweet little prank to find out who do your </span> Friends </span>{" "}
-              like 💕
+              <span className="text-primary font-semibold">A sweet little prank to find out who do your Friends like 💕</span>
             </p>
           </div>
 
