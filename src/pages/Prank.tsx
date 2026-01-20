@@ -145,15 +145,21 @@ const Prank = () => {
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2">💖 恋愛診断</h1>
             <p className="text-muted-foreground">あなたの恋の強さを確かめよう 💘</p>
-            
+
             {/* Social Proof */}
             <div className="mt-4 inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
               <span className="flex -space-x-2">
-                <span className="w-6 h-6 rounded-full bg-pink-400 border-2 border-white flex items-center justify-center text-xs">👩</span>
-                <span className="w-6 h-6 rounded-full bg-rose-400 border-2 border-white flex items-center justify-center text-xs">👨</span>
-                <span className="w-6 h-6 rounded-full bg-red-400 border-2 border-white flex items-center justify-center text-xs">💕</span>
+                <span className="w-6 h-6 rounded-full bg-pink-400 border-2 border-white flex items-center justify-center text-xs">
+                  👩
+                </span>
+                <span className="w-6 h-6 rounded-full bg-rose-400 border-2 border-white flex items-center justify-center text-xs">
+                  👨
+                </span>
+                <span className="w-6 h-6 rounded-full bg-red-400 border-2 border-white flex items-center justify-center text-xs">
+                  💕
+                </span>
               </span>
-              <span>2,000人以上が相性診断を試しました！</span>
+              <span>すでに200万人以上が試しています！</span>
             </div>
           </div>
 
