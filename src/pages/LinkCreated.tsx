@@ -89,7 +89,9 @@ const LinkCreated = () => {
   };
 
   const handleWhatsAppShare = () => {
-    const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + loveLink)}`;
+    // Include the full share text in the correct language
+    const fullText = `${shareText}\n${loveLink}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(fullText)}`;
     window.open(url, "_blank");
   };
 
