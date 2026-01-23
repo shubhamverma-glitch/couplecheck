@@ -54,6 +54,9 @@ const LinkCreated = () => {
     ? `${window.location.origin}/love?id=${prankId}`
     : `${window.location.origin}/${language}/love?id=${prankId}`;
   
+  // Share URL with language-specific meta tags via edge function
+  const shareLinkForSocial = `https://kajchrjwxhraghlqdmxa.supabase.co/functions/v1/share?lang=${language}&path=/love&id=${prankId}`;
+  
   const shareText = t('share.text');
 
   const handleCopy = async () => {
@@ -84,18 +87,18 @@ const LinkCreated = () => {
   };
 
   const handleWhatsAppShare = () => {
-    const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + loveLink)}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + shareLinkForSocial)}`;
     window.open(url, "_blank");
   };
 
   const handleTwitterShare = () => {
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(loveLink)}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareLinkForSocial)}`;
     window.open(url, "_blank");
   };
 
   const handleSnapchatShare = () => {
     const stickerUrl = "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/Snap_New/LoveMeter_CA-English.png";
-    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}&sticker=${encodeURIComponent(stickerUrl)}`;
+    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(shareLinkForSocial)}&sticker=${encodeURIComponent(stickerUrl)}`;
     window.open(url, "_blank");
   };
 
