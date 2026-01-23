@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import ArabicAdBanner from "@/components/ArabicAdBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Heart, Sparkles, Check, X, Loader2 } from "lucide-react";
@@ -259,6 +260,8 @@ const Prank = () => {
                       {t('prank.yes')}
                     </Button>
                   </div>
+
+                  <ArabicAdBanner />
                 </div>
               )}
             </div>

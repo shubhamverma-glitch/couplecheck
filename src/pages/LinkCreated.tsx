@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import ArabicAdBanner from "@/components/ArabicAdBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Heart, Copy, Check, Users, Loader2 } from "lucide-react";
@@ -215,6 +216,8 @@ const LinkCreated = () => {
                   {t('linkCreated.viewResponses')}
                 </Button>
               </Link>
+
+              <ArabicAdBanner />
             </div>
           </div>
         </div>

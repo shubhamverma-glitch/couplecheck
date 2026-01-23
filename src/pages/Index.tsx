@@ -3,6 +3,7 @@ import FloatingHearts from "@/components/FloatingHearts";
 import CreatePrankForm from "@/components/CreatePrankForm";
 import HeartIcon from "@/components/HeartIcon";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import ArabicAdBanner from "@/components/ArabicAdBanner";
 import { Sparkles } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
@@ -40,6 +41,8 @@ const Index = () => {
           </div>
 
           <CreatePrankForm />
+
+          <ArabicAdBanner />
 
           <div className="mt-16 text-center">
             <div className="flex items-center justify-center gap-2 text-muted-foreground">
