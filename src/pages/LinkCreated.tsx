@@ -1,13 +1,14 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Copy, Check, Share2, Users, Loader2 } from "lucide-react";
+import { Heart, Copy, Check, Users, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "react-router-dom";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 interface Prank {
   id: string;
@@ -17,13 +18,13 @@ interface Prank {
 
 const LinkCreated = () => {
   const [searchParams] = useSearchParams();
+  const { t, language, getLocalizedPath } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [prank, setPrank] = useState<Prank | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const prankId = searchParams.get("id") || "";
 
   useEffect(() => {
-    // Fire quiz_completion event when user creates their link
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: "quiz_completion" });
 
@@ -48,20 +49,21 @@ const LinkCreated = () => {
     fetchPrank();
   }, [prankId]);
 
-  const loveLink = `${window.location.origin}/love?id=${prankId}`;
+  // Use language prefix for the love link
+  const loveLink = language === 'ja' 
+    ? `${window.location.origin}/love?id=${prankId}`
+    : `${window.location.origin}/${language}/love?id=${prankId}`;
   
-  const shareText = `💝👩‍❤️‍👨 *本当の愛*か*ただの片思い*か？ 👩‍❤️‍👩💝
-🥰 このテストで本当の恋の相手を見つけよう！ 🥰
-🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩`;
+  const shareText = t('share.text');
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(loveLink);
       setCopied(true);
-      toast.success("リンクをコピーしました！友達に共有しよう 💕");
+      toast.success(t('linkCreated.copied'));
       setTimeout(() => setCopied(false), 3000);
     } catch {
-      toast.error("リンクのコピーに失敗しました");
+      toast.error(t('linkCreated.copyFailed'));
     }
   };
 
@@ -69,7 +71,7 @@ const LinkCreated = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "恋愛診断 💕",
+          title: t('meta.title'),
           text: shareText,
           url: loveLink,
         });
@@ -83,11 +85,6 @@ const LinkCreated = () => {
 
   const handleWhatsAppShare = () => {
     const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + loveLink)}`;
-    window.open(url, "_blank");
-  };
-
-  const handleFacebookShare = () => {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(loveLink)}&quote=${encodeURIComponent(shareText)}`;
     window.open(url, "_blank");
   };
 
@@ -114,6 +111,10 @@ const LinkCreated = () => {
     <div className="min-h-screen relative overflow-hidden">
       <FloatingHearts />
       
+      <div className="absolute top-4 right-4 z-20">
+        <LanguageSwitcher />
+      </div>
+      
       <div className="relative z-10 container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-lg mx-auto">
           <div className="text-center mb-8">
@@ -121,10 +122,10 @@ const LinkCreated = () => {
               <HeartIcon size="lg" animated />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
-              💖 ラブトラップ完成！
+              {t('linkCreated.title')}
             </h1>
             <p className="text-muted-foreground">
-              このリンクを友達に共有して、恋の秘密を暴いちゃおう ✨💌
+              {t('linkCreated.subtitle')}
             </p>
           </div>
 
@@ -138,16 +139,16 @@ const LinkCreated = () => {
                 <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
                   <Heart className="w-8 h-8 text-primary" fill="currentColor" />
                 </div>
-                <p className="text-sm text-muted-foreground mb-1">😏 トラップ作成者</p>
-                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "不明"}</p>
+                <p className="text-sm text-muted-foreground mb-1">{t('linkCreated.creator')}</p>
+                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "---"}</p>
               </div>
 
               <div className="space-y-3">
                 <label className="text-sm font-semibold text-foreground">
-                  💕 友達に共有しよう
+                  {t('linkCreated.shareLabel')}
                 </label>
                 <p className="text-xs text-muted-foreground">
-                  友達には楽しいクイズ…あなたには大きな秘密の暴露 🤭💗
+                  {t('linkCreated.shareHint')}
                 </p>
                 <div className="flex gap-2">
                   <Input
@@ -168,16 +169,15 @@ const LinkCreated = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <Button variant="soft" onClick={handleCopy}>
-                  📋 リンクをコピー
+                  {t('linkCreated.copyLink')}
                 </Button>
                 <Button variant="romantic" onClick={handleShare}>
-                  💌 シェア
+                  {t('linkCreated.share')}
                 </Button>
               </div>
 
-              {/* Social Share Buttons */}
               <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground text-center">シェア先:</p>
+                <p className="text-sm font-semibold text-foreground text-center">{t('linkCreated.shareVia')}</p>
                 <div className="grid grid-cols-3 gap-2">
                   <Button 
                     variant="soft" 
@@ -209,10 +209,10 @@ const LinkCreated = () => {
                 </div>
               </div>
 
-              <Link to={`/friendboard?id=${encodeURIComponent(prankId)}`} className="block">
+              <Link to={getLocalizedPath(`/friendboard?id=${encodeURIComponent(prankId)}`)} className="block">
                 <Button variant="soft" size="lg" className="w-full gap-2">
                   <Users className="w-4 h-4" />
-                  💕 友達の回答を見る
+                  {t('linkCreated.viewResponses')}
                 </Button>
               </Link>
             </div>
