@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -9,12 +9,12 @@ import { Heart, Sparkles, Check, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { isCreator } from "@/lib/prankStorage";
 
 const Prank = () => {
-  const { id: prankId = "" } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { t, getLocalizedPath } = useLanguage();
+  const prankId = searchParams.get("id") || "";
 
   const [step, setStep] = useState<"loading" | "info" | "questions">("loading");
   const [friendName, setFriendName] = useState("");
@@ -43,12 +43,6 @@ const Prank = () => {
         return;
       }
 
-      // Check if current user is the creator - redirect to friendboard
-      if (isCreator(prankId)) {
-        navigate(getLocalizedPath(`/friendboard/${prankId}`), { replace: true });
-        return;
-      }
-
       const { data, error } = await supabase.from("pranks").select("id").eq("id", prankId).maybeSingle();
 
       if (error || !data) {
@@ -58,7 +52,7 @@ const Prank = () => {
     };
 
     checkPrank();
-  }, [prankId, navigate, getLocalizedPath]);
+  }, [prankId]);
 
   const handleInfoSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -7,7 +7,6 @@ import HeartIcon from "./HeartIcon";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { addCreatedPrank } from "@/lib/prankStorage";
 
 const CreatePrankForm = () => {
   const [yourName, setYourName] = useState("");
@@ -28,9 +27,7 @@ const CreatePrankForm = () => {
         crush_name: ""
       }).select().single();
       if (error) throw error;
-      // Store prank ID in localStorage to identify creator
-      addCreatedPrank(data.id);
-      navigate(getLocalizedPath(`/link-created/${data.id}`));
+      navigate(getLocalizedPath(`/link-created?id=${data.id}`));
     } catch (error) {
       console.error("Error creating link:", error);
       toast.error(t('form.error'));

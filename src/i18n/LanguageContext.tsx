@@ -44,70 +44,38 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     // Update title
     document.title = getTranslation(language, 'meta.title');
     
-    // Update or create meta description
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.setAttribute('name', 'description');
-      document.head.appendChild(metaDesc);
+    // Update meta description
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', getTranslation(language, 'meta.description'));
     }
-    metaDesc.setAttribute('content', getTranslation(language, 'meta.description'));
     
-    // Update or create OG tags
-    let ogTitle = document.querySelector('meta[property="og:title"]');
-    if (!ogTitle) {
-      ogTitle = document.createElement('meta');
-      ogTitle.setAttribute('property', 'og:title');
-      document.head.appendChild(ogTitle);
+    // Update OG tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', getTranslation(language, 'meta.ogTitle'));
     }
-    ogTitle.setAttribute('content', getTranslation(language, 'meta.ogTitle'));
     
-    let ogDesc = document.querySelector('meta[property="og:description"]');
-    if (!ogDesc) {
-      ogDesc = document.createElement('meta');
-      ogDesc.setAttribute('property', 'og:description');
-      document.head.appendChild(ogDesc);
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) {
+      ogDesc.setAttribute('content', getTranslation(language, 'meta.ogDescription'));
     }
-    ogDesc.setAttribute('content', getTranslation(language, 'meta.ogDescription'));
     
-    let ogImage = document.querySelector('meta[property="og:image"]');
-    if (!ogImage) {
-      ogImage = document.createElement('meta');
-      ogImage.setAttribute('property', 'og:image');
-      document.head.appendChild(ogImage);
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage) {
+      ogImage.setAttribute('content', config.metaImage);
     }
-    ogImage.setAttribute('content', config.metaImage);
     
-    // Update or create Twitter tags
-    let twitterTitle = document.querySelector('meta[name="twitter:title"]');
-    if (!twitterTitle) {
-      twitterTitle = document.createElement('meta');
-      twitterTitle.setAttribute('name', 'twitter:title');
-      document.head.appendChild(twitterTitle);
+    // Update Twitter tags
+    const twitterImage = document.querySelector('meta[name="twitter:image"]');
+    if (twitterImage) {
+      twitterImage.setAttribute('content', config.metaImage);
     }
-    twitterTitle.setAttribute('content', getTranslation(language, 'meta.ogTitle'));
-    
-    let twitterDesc = document.querySelector('meta[name="twitter:description"]');
-    if (!twitterDesc) {
-      twitterDesc = document.createElement('meta');
-      twitterDesc.setAttribute('name', 'twitter:description');
-      document.head.appendChild(twitterDesc);
-    }
-    twitterDesc.setAttribute('content', getTranslation(language, 'meta.ogDescription'));
-    
-    let twitterImage = document.querySelector('meta[name="twitter:image"]');
-    if (!twitterImage) {
-      twitterImage = document.createElement('meta');
-      twitterImage.setAttribute('name', 'twitter:image');
-      document.head.appendChild(twitterImage);
-    }
-    twitterImage.setAttribute('content', config.metaImage);
   }, [language]);
 
   const setLanguage = (lang: Language) => {
     const currentPath = location.pathname;
-    // Remove existing language prefix to get clean path
-    const cleanPath = currentPath.replace(/^\/(en|ar|es|fr|ja)/, '') || '/';
+    const cleanPath = currentPath.replace(/^\/(en|ar|es|fr|ja)/, '');
     const newPath = getPathWithLanguage(cleanPath, lang);
     navigate(newPath + location.search);
   };
