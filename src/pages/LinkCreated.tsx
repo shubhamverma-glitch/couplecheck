@@ -1,4 +1,4 @@
-import { useSearchParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
@@ -9,6 +9,7 @@ import { Heart, Copy, Check, Users, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { addCreatedPrank } from "@/lib/prankStorage";
 
 interface Prank {
   id: string;
@@ -17,16 +18,20 @@ interface Prank {
 }
 
 const LinkCreated = () => {
-  const [searchParams] = useSearchParams();
+  const { id: prankId = "" } = useParams<{ id: string }>();
   const { t, language, getLocalizedPath } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [prank, setPrank] = useState<Prank | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const prankId = searchParams.get("id") || "";
 
   useEffect(() => {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: "quiz_completion" });
+
+    // Ensure this prank is marked as created by this user
+    if (prankId) {
+      addCreatedPrank(prankId);
+    }
 
     const fetchPrank = async () => {
       if (!prankId) {
@@ -49,10 +54,10 @@ const LinkCreated = () => {
     fetchPrank();
   }, [prankId]);
 
-  // Use language prefix for the love link
+  // Use language prefix for the love link - shorter URL format
   const loveLink = language === 'ja' 
-    ? `${window.location.origin}/love?id=${prankId}`
-    : `${window.location.origin}/${language}/love?id=${prankId}`;
+    ? `${window.location.origin}/love/${prankId}`
+    : `${window.location.origin}/${language}/love/${prankId}`;
   
   const shareText = t('share.text');
 
@@ -209,7 +214,7 @@ const LinkCreated = () => {
                 </div>
               </div>
 
-              <Link to={getLocalizedPath(`/friendboard?id=${encodeURIComponent(prankId)}`)} className="block">
+              <Link to={getLocalizedPath(`/friendboard/${prankId}`)} className="block">
                 <Button variant="soft" size="lg" className="w-full gap-2">
                   <Users className="w-4 h-4" />
                   {t('linkCreated.viewResponses')}

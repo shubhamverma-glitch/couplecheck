@@ -75,7 +75,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   const setLanguage = (lang: Language) => {
     const currentPath = location.pathname;
-    const cleanPath = currentPath.replace(/^\/(en|ar|es|fr|ja)/, '');
+    // Remove existing language prefix to get clean path
+    const cleanPath = currentPath.replace(/^\/(en|ar|es|fr|ja)/, '') || '/';
     const newPath = getPathWithLanguage(cleanPath, lang);
     navigate(newPath + location.search);
   };

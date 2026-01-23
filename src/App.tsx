@@ -18,21 +18,21 @@ const LanguageRoutes = () => (
   <Routes>
     {/* Japanese (default - no prefix) */}
     <Route path="/" element={<Index />} />
-    <Route path="/link-created" element={<LinkCreated />} />
-    <Route path="/love" element={<Prank />} />
-    <Route path="/prank" element={<Prank />} />
+    <Route path="/link-created/:id" element={<LinkCreated />} />
+    <Route path="/love/:id" element={<Prank />} />
+    <Route path="/prank/:id" element={<Prank />} />
     <Route path="/result" element={<Result />} />
-    <Route path="/friendboard" element={<Friendboard />} />
+    <Route path="/friendboard/:id" element={<Friendboard />} />
     
     {/* Language-prefixed routes */}
     {['en', 'ar', 'es', 'fr'].map((lang) => (
       <Route key={lang} path={`/${lang}`}>
         <Route index element={<Index />} />
-        <Route path="link-created" element={<LinkCreated />} />
-        <Route path="love" element={<Prank />} />
-        <Route path="prank" element={<Prank />} />
+        <Route path="link-created/:id" element={<LinkCreated />} />
+        <Route path="love/:id" element={<Prank />} />
+        <Route path="prank/:id" element={<Prank />} />
         <Route path="result" element={<Result />} />
-        <Route path="friendboard" element={<Friendboard />} />
+        <Route path="friendboard/:id" element={<Friendboard />} />
       </Route>
     ))}
     
