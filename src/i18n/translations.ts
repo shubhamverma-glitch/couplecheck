@@ -523,7 +523,12 @@ export const detectLanguageFromPath = (pathname: string): Language => {
 
 export const getPathWithLanguage = (path: string, lang: Language): string => {
   // Remove existing language prefix if any
-  const cleanPath = path.replace(/^\/(en|ar|es|fr|ja)/, '');
+  let cleanPath = path.replace(/^\/(en|ar|es|fr|ja)/, '');
+  
+  // Ensure path starts with /
+  if (cleanPath && !cleanPath.startsWith('/')) {
+    cleanPath = '/' + cleanPath;
+  }
   
   // Japanese is default, no prefix needed
   if (lang === 'ja') {
