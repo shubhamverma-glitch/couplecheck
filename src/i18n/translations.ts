@@ -522,11 +522,11 @@ export const detectLanguageFromPath = (pathname: string): Language => {
 };
 
 export const getPathWithLanguage = (path: string, lang: Language): string => {
-  // Remove existing language prefix if any
-  let cleanPath = path.replace(/^\/(en|ar|es|fr|ja)/, '');
+  // Remove existing language prefix if any (with word boundary to avoid partial matches)
+  let cleanPath = path.replace(/^\/(en|ar|es|fr|ja)(\/|$)/, '/');
   
   // Ensure path starts with /
-  if (cleanPath && !cleanPath.startsWith('/')) {
+  if (!cleanPath.startsWith('/')) {
     cleanPath = '/' + cleanPath;
   }
   
@@ -535,5 +535,5 @@ export const getPathWithLanguage = (path: string, lang: Language): string => {
     return cleanPath || '/';
   }
   
-  return `/${lang}${cleanPath || ''}`;
+  return `/${lang}${cleanPath}`;
 };
