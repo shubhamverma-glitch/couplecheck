@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -25,14 +25,14 @@ interface Prank {
 }
 
 const Friendboard = () => {
-  const [searchParams] = useSearchParams();
-  const { t, language } = useLanguage();
-  const prankId = searchParams.get("id") || "";
+  const { id: prankId = "" } = useParams<{ id: string }>();
+  const { t, language, getLocalizedPath } = useLanguage();
   const [responses, setResponses] = useState<PrankResponse[]>([]);
   const [prank, setPrank] = useState<Prank | null>(null);
   const [selectedResponse, setSelectedResponse] = useState<PrankResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
   const questions = [
     { id: "date", textKey: "question.thinkOften", emoji: "💋" },
@@ -42,9 +42,10 @@ const Friendboard = () => {
     { id: "confess", textKey: "question.talkForHours", emoji: "💌" },
   ];
   
+  // Shorter URL format
   const loveLink = language === 'ja' 
-    ? `${window.location.origin}/love?id=${prankId}`
-    : `${window.location.origin}/${language}/love?id=${prankId}`;
+    ? `${window.location.origin}/love/${prankId}`
+    : `${window.location.origin}/${language}/love/${prankId}`;
   const shareText = t('share.text');
 
   useEffect(() => {
@@ -53,17 +54,24 @@ const Friendboard = () => {
 
     const fetchData = async () => {
       if (!prankId) {
+        setNotFound(true);
         setIsLoading(false);
         return;
       }
-      const { data: prankData } = await supabase
+      const { data: prankData, error } = await supabase
         .from("pranks")
         .select("*")
         .eq("id", prankId)
         .maybeSingle();
-      if (prankData) {
-        setPrank(prankData);
+      
+      if (error || !prankData) {
+        setNotFound(true);
+        setIsLoading(false);
+        return;
       }
+      
+      setPrank(prankData);
+      
       const { data: responsesData } = await supabase
         .from("prank_responses")
         .select("*")
@@ -117,6 +125,26 @@ const Friendboard = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // Show 404 page if prank not found
+  if (notFound) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <FloatingHearts />
+        <div className="absolute top-4 right-4 z-20">
+          <LanguageSwitcher />
+        </div>
+        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
+          <HeartIcon size="lg" animated />
+          <h1 className="text-4xl font-bold mt-4 mb-2">{t('notFound.title')}</h1>
+          <p className="text-muted-foreground mb-6">{t('notFound.message')}</p>
+          <Link to={getLocalizedPath('/')}>
+            <Button variant="romantic">{t('notFound.backHome')}</Button>
+          </Link>
+        </div>
       </div>
     );
   }
