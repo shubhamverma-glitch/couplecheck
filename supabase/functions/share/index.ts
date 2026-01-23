@@ -7,7 +7,7 @@ const corsHeaders = {
 
 const languageConfigs: Record<string, { metaImage: string; title: string; ogTitle: string; ogDescription: string }> = {
   en: {
-    metaImage: "https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_English.png",
+    metaImage: "https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Arabic.png",
     title: "Love Check - Love Compatibility Test",
     ogTitle: "💝 Love Test - Check Your Compatibility 💝",
     ogDescription: "🥰 Find your true love match with this test! 🥰",

@@ -22,7 +22,7 @@ export const languageConfigs: Record<Language, LanguageConfig> = {
     name: 'English',
     nativeName: 'English',
     dir: 'ltr',
-    metaImage: 'https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_English.png',
+    metaImage: 'https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Arabic.png',
   },
   ar: {
     code: 'ar',
