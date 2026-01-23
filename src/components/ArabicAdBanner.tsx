@@ -14,12 +14,13 @@ const ArabicAdBanner = () => {
         href="https://ar.friendsforlife.me/اختبار-الصداقة-لأفضل-صديق-للأبد/play/2183"
         target="_blank"
         rel="noopener noreferrer"
-        className="block max-w-md w-full"
+        className="block"
+        style={{ width: 300, height: 250 }}
       >
         <img 
           src="http://img.holaquiz.com//public/site_content/quiz/ck_editor/images/ads_custom/FFL_Two_Arabic.jpg"
           alt="إعلان"
-          className="w-full h-auto rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+          className="w-full h-full object-cover rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
         />
       </a>
     </div>
