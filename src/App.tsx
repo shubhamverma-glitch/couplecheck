@@ -25,7 +25,7 @@ const LanguageRoutes = () => (
     <Route path="/friendboard/:id" element={<Friendboard />} />
     
     {/* Language-prefixed routes */}
-    {['en', 'ar', 'es', 'fr'].map((lang) => (
+    {['en', 'ar', 'es', 'fr', 'ja'].map((lang) => (
       <Route key={lang} path={`/${lang}`}>
         <Route index element={<Index />} />
         <Route path="link-created/:id" element={<LinkCreated />} />
