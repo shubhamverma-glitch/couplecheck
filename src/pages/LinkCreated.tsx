@@ -168,6 +168,55 @@ const LinkCreated = () => {
             </div>
 
             <div className="relative z-10 space-y-6">
+              {/* Responses Section - At Top */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-semibold text-foreground">
+                    {t('linkCreated.responses') || "Responses"} ({responses.length})
+                  </p>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={handleRefresh}
+                    disabled={isRefreshing}
+                    className="gap-1"
+                  >
+                    <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                    {t('linkCreated.refresh') || "Refresh"}
+                  </Button>
+                </div>
+                
+                {responses.length === 0 ? (
+                  <div className="bg-secondary/50 rounded-xl p-4 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      {t('linkCreated.noResponses') || "No responses yet. Share your link!"}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                    {responses.map((response) => (
+                      <div key={response.id} className="bg-secondary/50 rounded-xl p-4">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                            <Heart className="w-4 h-4 text-primary" fill="currentColor" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-muted-foreground">{t('linkCreated.friendLabel') || "Friend Name"}</p>
+                            <p className="font-bold text-foreground truncate">{response.friend_name}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 pl-11">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-muted-foreground">{t('linkCreated.crushLabel') || "Their Crush"}</p>
+                            <p className="font-semibold text-primary truncate">❤️ {response.crush_name}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <div className="bg-secondary rounded-xl p-6 text-center">
                 <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
                   <Heart className="w-8 h-8 text-primary" fill="currentColor" />
@@ -240,47 +289,6 @@ const LinkCreated = () => {
                     <span className="text-xs">Snapchat</span>
                   </Button>
                 </div>
-              </div>
-
-              {/* Responses Section */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-foreground">
-                    {t('linkCreated.responses') || "Responses"} ({responses.length})
-                  </p>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={handleRefresh}
-                    disabled={isRefreshing}
-                    className="gap-1"
-                  >
-                    <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                    {t('linkCreated.refresh') || "Refresh"}
-                  </Button>
-                </div>
-                
-                {responses.length === 0 ? (
-                  <div className="bg-secondary/50 rounded-xl p-4 text-center">
-                    <p className="text-sm text-muted-foreground">
-                      {t('linkCreated.noResponses') || "No responses yet. Share your link!"}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-2 max-h-60 overflow-y-auto">
-                    {responses.map((response) => (
-                      <div key={response.id} className="bg-secondary/50 rounded-xl p-3 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                          <Heart className="w-5 h-5 text-primary" fill="currentColor" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-foreground truncate">{response.friend_name}</p>
-                          <p className="text-sm text-primary truncate">❤️ {response.crush_name}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
 
               <ArabicAdBanner />

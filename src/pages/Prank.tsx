@@ -180,7 +180,7 @@ const Prank = () => {
                   </div>
 
                   <Button type="submit" variant="romantic" size="lg" className="w-full gap-2" disabled={isSubmitting}>
-                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <>😍 {t('prank.startQuiz')}</>}
+                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <>😍 {t('prank.calculateNow') || "Calculate Now"}</>}
                     <Heart className="w-5 h-5" fill="currentColor" />
                   </Button>
 
