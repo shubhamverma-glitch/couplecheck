@@ -6,7 +6,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ArabicAdBanner from "@/components/ArabicAdBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Sparkles, Check, X, Loader2 } from "lucide-react";
+import { Heart, Sparkles, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -17,21 +17,11 @@ const Prank = () => {
   const { t, getLocalizedPath } = useLanguage();
   const prankId = searchParams.get("id") || "";
 
-  const [step, setStep] = useState<"loading" | "info" | "questions">("loading");
+  const [step, setStep] = useState<"loading" | "info">("loading");
   const [friendName, setFriendName] = useState("");
   const [crushName, setCrushName] = useState("");
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [prankExists, setPrankExists] = useState(true);
-
-  const questions = [
-    { id: "date", textKey: "question.thinkOften", emoji: "💑" },
-    { id: "fake", textKey: "question.nervousAround", emoji: "🎭" },
-    { id: "dream", textKey: "question.dreamAbout", emoji: "💭" },
-    { id: "spark", textKey: "question.smileWhenSee", emoji: "✨" },
-    { id: "confess", textKey: "question.talkForHours", emoji: "💌" },
-  ];
 
   useEffect(() => {
     window.dataLayer = window.dataLayer || [];
@@ -55,51 +45,36 @@ const Prank = () => {
     checkPrank();
   }, [prankId]);
 
-  const handleInfoSubmit = (e: React.FormEvent) => {
+  const handleInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (friendName.trim() && crushName.trim()) {
-      setStep("questions");
+    if (!friendName.trim() || !crushName.trim()) return;
+    
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.from("prank_responses").insert({
+        prank_id: prankId,
+        friend_name: friendName.trim(),
+        crush_name: crushName.trim(),
+        answers: {},
+      });
+
+      if (error) throw error;
+
+      const resultData = btoa(
+        JSON.stringify({
+          prankId,
+          friendName: friendName.trim(),
+          crushName: crushName.trim(),
+        }),
+      );
+      navigate(getLocalizedPath(`/result?data=${encodeURIComponent(resultData)}`));
+    } catch (error) {
+      console.error("Error saving response:", error);
+      toast.error(t('prank.error'));
+      setIsSubmitting(false);
     }
   };
 
-  const handleAnswer = async (answer: boolean) => {
-    const currentQuestion = questions[currentQuestionIndex];
-    const newAnswers = { ...answers, [currentQuestion.id]: answer };
-    setAnswers(newAnswers);
-
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
-    } else {
-      setIsSubmitting(true);
-      try {
-        const { error } = await supabase.from("prank_responses").insert({
-          prank_id: prankId,
-          friend_name: friendName.trim(),
-          crush_name: crushName.trim(),
-          answers: newAnswers,
-        });
-
-        if (error) throw error;
-
-        const resultData = btoa(
-          JSON.stringify({
-            prankId,
-            friendName,
-            crushName,
-            answers: newAnswers,
-          }),
-        );
-        navigate(getLocalizedPath(`/result?data=${encodeURIComponent(resultData)}`));
-      } catch (error) {
-        console.error("Error saving response:", error);
-        toast.error(t('prank.error'));
-        setIsSubmitting(false);
-      }
-    }
-  };
-
-  const currentQuestion = questions[currentQuestionIndex];
-  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   if (step === "loading") {
     return (
@@ -204,65 +179,13 @@ const Prank = () => {
                     </div>
                   </div>
 
-                  <Button type="submit" variant="romantic" size="lg" className="w-full gap-2">
-                    😍 {t('prank.startQuiz')}
+                  <Button type="submit" variant="romantic" size="lg" className="w-full gap-2" disabled={isSubmitting}>
+                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <>😍 {t('prank.startQuiz')}</>}
                     <Heart className="w-5 h-5" fill="currentColor" />
                   </Button>
-                </form>
-              )}
-
-              {step === "questions" && (
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">
-                        {t('prank.questionOf')} {currentQuestionIndex + 1} / {questions.length}
-                      </span>
-                      <span className="text-primary font-semibold">{Math.round(progress)}%</span>
-                    </div>
-                    <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 ease-out rounded-full"
-                        style={{ width: `${progress}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="text-center py-8">
-                    <div className="text-5xl mb-4">{currentQuestion.emoji}</div>
-                    <h2 className="text-xl font-bold text-foreground mb-2">
-                      {t(currentQuestion.textKey, { crushName })}
-                    </h2>
-                    <p className="text-sm text-muted-foreground">
-                      <span className="text-primary font-semibold">{crushName}</span>
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button
-                      variant="soft"
-                      size="lg"
-                      onClick={() => handleAnswer(false)}
-                      className="gap-2"
-                      disabled={isSubmitting}
-                    >
-                      <X className="w-5 h-5" />
-                      {t('prank.no')}
-                    </Button>
-                    <Button
-                      variant="romantic"
-                      size="lg"
-                      onClick={() => handleAnswer(true)}
-                      className="gap-2"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Check className="w-5 h-5" />}
-                      {t('prank.yes')}
-                    </Button>
-                  </div>
 
                   <ArabicAdBanner />
-                </div>
+                </form>
               )}
             </div>
           </div>
