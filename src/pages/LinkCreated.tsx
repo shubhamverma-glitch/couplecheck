@@ -1,12 +1,12 @@
 import { useSearchParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ArabicAdBanner from "@/components/ArabicAdBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Copy, Check, Loader2 } from "lucide-react";
+import { Heart, Copy, Check, Loader2, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -17,19 +17,49 @@ interface Prank {
   crush_name: string;
 }
 
+interface PrankResponse {
+  id: string;
+  friend_name: string;
+  crush_name: string;
+  submitted_at: string;
+}
+
 const LinkCreated = () => {
   const [searchParams] = useSearchParams();
-  const { t, language, getLocalizedPath } = useLanguage();
+  const { t, language } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [prank, setPrank] = useState<Prank | null>(null);
+  const [responses, setResponses] = useState<PrankResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const prankId = searchParams.get("id") || "";
+
+  const fetchResponses = useCallback(async () => {
+    if (!prankId) return;
+    
+    const { data } = await supabase
+      .from("prank_responses")
+      .select("id, friend_name, crush_name, submitted_at")
+      .eq("prank_id", prankId)
+      .order("submitted_at", { ascending: false });
+
+    if (data) {
+      setResponses(data);
+    }
+  }, [prankId]);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchResponses();
+    setIsRefreshing(false);
+    toast.success(t('linkCreated.refreshed') || "Refreshed!");
+  };
 
   useEffect(() => {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: "quiz_completion" });
 
-    const fetchPrank = async () => {
+    const fetchData = async () => {
       if (!prankId) {
         setIsLoading(false);
         return;
@@ -44,11 +74,13 @@ const LinkCreated = () => {
       if (data) {
         setPrank(data);
       }
+      
+      await fetchResponses();
       setIsLoading(false);
     };
 
-    fetchPrank();
-  }, [prankId]);
+    fetchData();
+  }, [prankId, fetchResponses]);
 
   // Use language prefix for the love link
   const loveLink = language === 'ja' 
@@ -210,6 +242,46 @@ const LinkCreated = () => {
                 </div>
               </div>
 
+              {/* Responses Section */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-semibold text-foreground">
+                    {t('linkCreated.responses') || "Responses"} ({responses.length})
+                  </p>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={handleRefresh}
+                    disabled={isRefreshing}
+                    className="gap-1"
+                  >
+                    <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                    {t('linkCreated.refresh') || "Refresh"}
+                  </Button>
+                </div>
+                
+                {responses.length === 0 ? (
+                  <div className="bg-secondary/50 rounded-xl p-4 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      {t('linkCreated.noResponses') || "No responses yet. Share your link!"}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                    {responses.map((response) => (
+                      <div key={response.id} className="bg-secondary/50 rounded-xl p-3 flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                          <Heart className="w-5 h-5 text-primary" fill="currentColor" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-foreground truncate">{response.friend_name}</p>
+                          <p className="text-sm text-primary truncate">❤️ {response.crush_name}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <ArabicAdBanner />
             </div>
