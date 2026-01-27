@@ -4,9 +4,10 @@ import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ArabicAdBanner from "@/components/ArabicAdBanner";
+import ResponsesList from "@/components/ResponsesList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Copy, Check, Loader2, RefreshCw } from "lucide-react";
+import { Heart, Copy, Check, Loader2, Share2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -148,145 +149,133 @@ const LinkCreated = () => {
         <LanguageSwitcher />
       </div>
       
-      <div className="relative z-10 container mx-auto px-4 py-12 md:py-20">
-        <div className="max-w-lg mx-auto">
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
+      <div className="relative z-10 container mx-auto px-4 py-8 md:py-12">
+        <div className="max-w-lg mx-auto space-y-6">
+          {/* Hero Header */}
+          <div className="text-center">
+            <div className="relative inline-block mb-4">
               <HeartIcon size="lg" animated />
+              <Sparkles className="absolute -top-1 -right-1 w-5 h-5 text-primary animate-pulse" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
-              {t('linkCreated.title')}
+            <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2">
+              {t('linkCreated.trapReady') || "Your Trap is Ready!"} 🎯
             </h1>
             <p className="text-muted-foreground">
               {t('linkCreated.subtitle')}
             </p>
           </div>
 
-          <div className="card-romantic rounded-3xl p-8 relative overflow-hidden">
-            <div className="absolute -top-4 -right-4 opacity-20">
+          {/* Responses Card - Featured Section */}
+          <div className="card-romantic rounded-3xl p-6 relative overflow-hidden">
+            <div className="absolute -top-8 -right-8 opacity-10">
               <HeartIcon size="xl" />
             </div>
+            <ResponsesList 
+              responses={responses}
+              isRefreshing={isRefreshing}
+              onRefresh={handleRefresh}
+            />
+          </div>
 
-            <div className="relative z-10 space-y-6">
-              {/* Responses Section - At Top */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-foreground">
-                    {t('linkCreated.responses') || "Responses"} ({responses.length})
-                  </p>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={handleRefresh}
-                    disabled={isRefreshing}
-                    className="gap-1"
-                  >
-                    <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                    {t('linkCreated.refresh') || "Refresh"}
-                  </Button>
+          {/* Share Section */}
+          <div className="card-romantic rounded-3xl p-6 relative overflow-hidden">
+            <div className="absolute -bottom-4 -left-4 opacity-10">
+              <Heart className="w-20 h-20" />
+            </div>
+            
+            <div className="relative z-10 space-y-5">
+              {/* Creator Badge */}
+              <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl border border-primary/20">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
+                  <span className="text-2xl font-bold text-primary-foreground">
+                    {prank?.creator_name?.charAt(0).toUpperCase() || "?"}
+                  </span>
                 </div>
-                
-                {responses.length === 0 ? (
-                  <div className="bg-secondary/50 rounded-xl p-4 text-center">
-                    <p className="text-sm text-muted-foreground">
-                      {t('linkCreated.noResponses') || "No responses yet. Share your link!"}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-2 max-h-60 overflow-y-auto">
-                    {responses.map((response) => (
-                      <div key={response.id} className="bg-secondary/50 rounded-xl p-4">
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                            <Heart className="w-4 h-4 text-primary" fill="currentColor" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs text-muted-foreground">{t('linkCreated.friendLabel') || "Friend Name"}</p>
-                            <p className="font-bold text-foreground truncate">{response.friend_name}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3 pl-11">
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs text-muted-foreground">{t('linkCreated.crushLabel') || "Their Crush"}</p>
-                            <p className="font-semibold text-primary truncate">❤️ {response.crush_name}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <div>
+                  <p className="text-xs text-muted-foreground">{t('linkCreated.trapMaster') || "Trap Master"}</p>
+                  <p className="font-bold text-xl text-foreground">{prank?.creator_name || "---"}</p>
+                </div>
               </div>
 
-              <div className="bg-secondary rounded-xl p-6 text-center">
-                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Heart className="w-8 h-8 text-primary" fill="currentColor" />
-                </div>
-                <p className="text-sm text-muted-foreground mb-1">{t('linkCreated.creator')}</p>
-                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "---"}</p>
-              </div>
-
+              {/* Share Link */}
               <div className="space-y-3">
-                <label className="text-sm font-semibold text-foreground">
-                  {t('linkCreated.shareLabel')}
-                </label>
-                <p className="text-xs text-muted-foreground">
-                  {t('linkCreated.shareHint')}
-                </p>
+                <div className="flex items-center gap-2">
+                  <Share2 className="w-4 h-4 text-primary" />
+                  <label className="text-sm font-semibold text-foreground">
+                    {t('linkCreated.magicLink') || "Your Magic Link"}
+                  </label>
+                </div>
                 <div className="flex gap-2">
                   <Input
                     value={loveLink}
                     readOnly
-                    className="text-sm"
+                    className="text-sm bg-secondary/50 border-primary/20 focus:border-primary"
                   />
                   <Button
                     variant={copied ? "soft" : "romantic"}
                     size="icon"
                     onClick={handleCopy}
-                    className="shrink-0 w-12"
+                    className="shrink-0 w-12 transition-all duration-300"
                   >
                     {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                   </Button>
                 </div>
               </div>
 
+              {/* Main Share Buttons */}
               <div className="grid grid-cols-2 gap-3">
-                <Button variant="soft" onClick={handleCopy}>
+                <Button 
+                  variant="soft" 
+                  onClick={handleCopy}
+                  className="gap-2 hover:scale-105 transition-transform"
+                >
+                  <Copy className="w-4 h-4" />
                   {t('linkCreated.copyLink')}
                 </Button>
-                <Button variant="romantic" onClick={handleShare}>
+                <Button 
+                  variant="romantic" 
+                  onClick={handleShare}
+                  className="gap-2 hover:scale-105 transition-transform"
+                >
+                  <Share2 className="w-4 h-4" />
                   {t('linkCreated.share')}
                 </Button>
               </div>
 
+              {/* Social Share Buttons */}
               <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground text-center">{t('linkCreated.shareVia')}</p>
-                <div className="grid grid-cols-3 gap-2">
+                <p className="text-sm font-semibold text-foreground text-center flex items-center justify-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  {t('linkCreated.shareVia')}
+                  <Sparkles className="w-4 h-4 text-primary" />
+                </p>
+                <div className="grid grid-cols-3 gap-3">
                   <Button 
                     variant="soft" 
                     size="sm"
                     onClick={handleWhatsAppShare}
-                    className="flex flex-col items-center gap-1 h-auto py-3 bg-green-500/10 hover:bg-green-500/20 text-green-600"
+                    className="flex flex-col items-center gap-2 h-auto py-4 bg-gradient-to-br from-green-500/10 to-green-500/20 hover:from-green-500/20 hover:to-green-500/30 text-green-600 border border-green-500/20 hover:scale-105 transition-all duration-300"
                   >
-                    <span className="text-xl">💬</span>
-                    <span className="text-xs">WhatsApp</span>
+                    <span className="text-2xl">💬</span>
+                    <span className="text-xs font-semibold">WhatsApp</span>
                   </Button>
                   <Button 
                     variant="soft" 
                     size="sm"
                     onClick={handleTwitterShare}
-                    className="flex flex-col items-center gap-1 h-auto py-3 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600"
+                    className="flex flex-col items-center gap-2 h-auto py-4 bg-gradient-to-br from-sky-500/10 to-sky-500/20 hover:from-sky-500/20 hover:to-sky-500/30 text-sky-600 border border-sky-500/20 hover:scale-105 transition-all duration-300"
                   >
-                    <span className="text-xl">🐦</span>
-                    <span className="text-xs">Twitter</span>
+                    <span className="text-2xl">🐦</span>
+                    <span className="text-xs font-semibold">Twitter</span>
                   </Button>
                   <Button 
                     variant="soft" 
                     size="sm"
                     onClick={handleSnapchatShare}
-                    className="flex flex-col items-center gap-1 h-auto py-3 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-600"
+                    className="flex flex-col items-center gap-2 h-auto py-4 bg-gradient-to-br from-yellow-500/10 to-yellow-500/20 hover:from-yellow-500/20 hover:to-yellow-500/30 text-yellow-600 border border-yellow-500/20 hover:scale-105 transition-all duration-300"
                   >
-                    <span className="text-xl">👻</span>
-                    <span className="text-xs">Snapchat</span>
+                    <span className="text-2xl">👻</span>
+                    <span className="text-xs font-semibold">Snapchat</span>
                   </Button>
                 </div>
               </div>
