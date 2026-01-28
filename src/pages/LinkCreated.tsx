@@ -180,8 +180,8 @@ const LinkCreated = () => {
                 {/* Table Header */}
                 <div className="bg-primary text-primary-foreground">
                   <div className="grid grid-cols-2 text-center font-bold py-3 px-4">
-                    <div>{t("friendName") || "Friend-Name"}</div>
-                    <div>{t("friendboard.crushName") || "Name of Crush"}</div>
+                    <div>{t("Friend Name") || "Friend-Name"}</div>
+                    <div>{t("Crush Name") || "Name of Crush"}</div>
                   </div>
                 </div>
                 {/* Table Body */}
