@@ -6,7 +6,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ArabicAdBanner from "@/components/ArabicAdBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Copy, Check, Loader2, RefreshCw } from "lucide-react";
+import { Heart, Copy, Check, Loader2, RefreshCw, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -144,7 +144,7 @@ const LinkCreated = () => {
       </div>
       
       <div className="relative z-10 container mx-auto px-4 py-12 md:py-20">
-        <div className="max-w-lg mx-auto">
+        <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
               <HeartIcon size="lg" animated />
@@ -155,22 +155,72 @@ const LinkCreated = () => {
             <p className="text-muted-foreground">
               {t('linkCreated.subtitle')}
             </p>
+            {prank && (
+              <p className="text-sm text-primary mt-2">
+                {t('linkCreated.creator')}: <span className="font-bold">{prank.creator_name}</span>
+              </p>
+            )}
           </div>
 
+          {/* Responses Table - At Top */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+                <Heart className="w-5 h-5 text-primary" fill="currentColor" />
+                {t('friendboard.title')}
+              </h2>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                className="gap-2"
+              >
+                <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                {t('linkCreated.refresh') || "Refresh"}
+              </Button>
+            </div>
+
+            {responses.length === 0 ? (
+              <div className="card-romantic rounded-2xl p-6 text-center">
+                <Heart className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-40" />
+                <p className="text-muted-foreground">{t('friendboard.noResponses')}</p>
+                <p className="text-sm text-muted-foreground mt-1">{t('friendboard.shareToGet')}</p>
+              </div>
+            ) : (
+              <div className="rounded-2xl overflow-hidden border-2 border-primary/30">
+                {/* Table Header */}
+                <div className="bg-primary text-primary-foreground">
+                  <div className="grid grid-cols-2 text-center font-bold py-3 px-4">
+                    <div>{t('friendboard.friendName') || "Friend-Name"}</div>
+                    <div>{t('friendboard.crushName') || "Name of Crush"}</div>
+                  </div>
+                </div>
+                {/* Table Body */}
+                <div className="bg-primary/10">
+                  {responses.map((response, index) => (
+                    <div
+                      key={response.id}
+                      className={`grid grid-cols-2 text-center py-3 px-4 ${
+                        index !== responses.length - 1 ? 'border-b border-primary/20' : ''
+                      }`}
+                    >
+                      <div className="font-medium text-foreground">{response.friend_name}</div>
+                      <div className="font-bold text-primary">{response.crush_name}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Share Section */}
           <div className="card-romantic rounded-3xl p-8 relative overflow-hidden">
             <div className="absolute -top-4 -right-4 opacity-20">
               <HeartIcon size="xl" />
             </div>
 
             <div className="relative z-10 space-y-6">
-              <div className="bg-secondary rounded-xl p-6 text-center">
-                <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Heart className="w-8 h-8 text-primary" fill="currentColor" />
-                </div>
-                <p className="text-sm text-muted-foreground mb-1">{t('linkCreated.creator')}</p>
-                <p className="font-bold text-xl text-foreground">{prank?.creator_name || "---"}</p>
-              </div>
-
               <div className="space-y-3">
                 <label className="text-sm font-semibold text-foreground">
                   {t('linkCreated.shareLabel')}
@@ -237,62 +287,6 @@ const LinkCreated = () => {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Responses Section */}
-          <div className="mt-8">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
-                <Heart className="w-5 h-5 text-primary" fill="currentColor" />
-                {t('friendboard.title')}
-              </h2>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleRefresh}
-                disabled={isRefreshing}
-                className="gap-2"
-              >
-                <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                {t('linkCreated.refresh') || "Refresh"}
-              </Button>
-            </div>
-
-            {responses.length === 0 ? (
-              <div className="card-romantic rounded-2xl p-6 text-center">
-                <Heart className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-40" />
-                <p className="text-muted-foreground">{t('friendboard.noResponses')}</p>
-                <p className="text-sm text-muted-foreground mt-1">{t('friendboard.shareToGet')}</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {responses.map((response) => (
-                  <div
-                    key={response.id}
-                    className="card-romantic rounded-2xl p-5"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                        <Heart className="w-6 h-6 text-primary" fill="currentColor" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <div className="flex items-center gap-1">
-                            <span className="text-lg">👤</span>
-                            <span className="font-bold text-foreground">{response.friend_name}</span>
-                          </div>
-                          <span className="text-primary">💕</span>
-                          <div className="flex items-center gap-1">
-                            <span className="text-lg">💘</span>
-                            <span className="font-bold text-primary">{response.crush_name}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
           <ArabicAdBanner />
