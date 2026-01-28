@@ -1,4 +1,4 @@
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
@@ -6,7 +6,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ArabicAdBanner from "@/components/ArabicAdBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Copy, Check, Loader2, Users } from "lucide-react";
+import { Heart, Copy, Check, Loader2, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -17,39 +17,65 @@ interface Prank {
   crush_name: string;
 }
 
+interface PrankResponse {
+  id: string;
+  prank_id: string;
+  friend_name: string;
+  crush_name: string;
+  submitted_at: string;
+}
+
 const LinkCreated = () => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const { t, language, getLocalizedPath } = useLanguage();
+  const { t, language } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [prank, setPrank] = useState<Prank | null>(null);
+  const [responses, setResponses] = useState<PrankResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const prankId = searchParams.get("id") || "";
+
+  const fetchData = async () => {
+    if (!prankId) {
+      setIsLoading(false);
+      return;
+    }
+
+    const { data: prankData } = await supabase
+      .from("pranks")
+      .select("*")
+      .eq("id", prankId)
+      .maybeSingle();
+
+    if (prankData) {
+      setPrank(prankData);
+    }
+
+    const { data: responsesData } = await supabase
+      .from("prank_responses")
+      .select("*")
+      .eq("prank_id", prankId)
+      .order("submitted_at", { ascending: false });
+
+    if (responsesData) {
+      setResponses(responsesData as PrankResponse[]);
+    }
+
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: "quiz_completion" });
-
-    const fetchPrank = async () => {
-      if (!prankId) {
-        setIsLoading(false);
-        return;
-      }
-
-      const { data } = await supabase
-        .from("pranks")
-        .select("*")
-        .eq("id", prankId)
-        .maybeSingle();
-
-      if (data) {
-        setPrank(data);
-      }
-      setIsLoading(false);
-    };
-
-    fetchPrank();
+    fetchData();
   }, [prankId]);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchData();
+    setIsRefreshing(false);
+    toast.success(t('linkCreated.refreshed') || "Refreshed!");
+  };
 
   // Use language prefix for the love link
   const loveLink = language === 'ja' 
@@ -99,10 +125,6 @@ const LinkCreated = () => {
     const stickerUrl = "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/Snap_New/LoveMeter_CA-English.png";
     const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}&sticker=${encodeURIComponent(stickerUrl)}`;
     window.open(url, "_blank");
-  };
-
-  const handleViewFriendboard = () => {
-    navigate(getLocalizedPath(`/friendboard?id=${prankId}`));
   };
 
   if (isLoading) {
@@ -214,19 +236,66 @@ const LinkCreated = () => {
                   </Button>
                 </div>
               </div>
-
-              <Button 
-                variant="romantic" 
-                onClick={handleViewFriendboard}
-                className="w-full gap-2"
-              >
-                <Users className="w-5 h-5" />
-                {t('linkCreated.viewResponses')}
-              </Button>
-
-              <ArabicAdBanner />
             </div>
           </div>
+
+          {/* Responses Section */}
+          <div className="mt-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+                <Heart className="w-5 h-5 text-primary" fill="currentColor" />
+                {t('friendboard.title')}
+              </h2>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                className="gap-2"
+              >
+                <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                {t('linkCreated.refresh') || "Refresh"}
+              </Button>
+            </div>
+
+            {responses.length === 0 ? (
+              <div className="card-romantic rounded-2xl p-6 text-center">
+                <Heart className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-40" />
+                <p className="text-muted-foreground">{t('friendboard.noResponses')}</p>
+                <p className="text-sm text-muted-foreground mt-1">{t('friendboard.shareToGet')}</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {responses.map((response) => (
+                  <div
+                    key={response.id}
+                    className="card-romantic rounded-2xl p-5"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                        <Heart className="w-6 h-6 text-primary" fill="currentColor" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <div className="flex items-center gap-1">
+                            <span className="text-lg">👤</span>
+                            <span className="font-bold text-foreground">{response.friend_name}</span>
+                          </div>
+                          <span className="text-primary">💕</span>
+                          <div className="flex items-center gap-1">
+                            <span className="text-lg">💘</span>
+                            <span className="font-bold text-primary">{response.crush_name}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <ArabicAdBanner />
         </div>
       </div>
     </div>
