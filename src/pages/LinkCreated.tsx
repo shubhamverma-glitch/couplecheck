@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import FloatingHearts from "@/components/FloatingHearts";
 import HeartIcon from "@/components/HeartIcon";
@@ -6,7 +6,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ArabicAdBanner from "@/components/ArabicAdBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Heart, Copy, Check, Loader2 } from "lucide-react";
+import { Heart, Copy, Check, Loader2, Users } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -19,6 +19,7 @@ interface Prank {
 
 const LinkCreated = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { t, language, getLocalizedPath } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [prank, setPrank] = useState<Prank | null>(null);
@@ -98,6 +99,10 @@ const LinkCreated = () => {
     const stickerUrl = "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/Snap_New/LoveMeter_CA-English.png";
     const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}&sticker=${encodeURIComponent(stickerUrl)}`;
     window.open(url, "_blank");
+  };
+
+  const handleViewFriendboard = () => {
+    navigate(getLocalizedPath(`/friendboard?id=${prankId}`));
   };
 
   if (isLoading) {
@@ -210,6 +215,14 @@ const LinkCreated = () => {
                 </div>
               </div>
 
+              <Button 
+                variant="romantic" 
+                onClick={handleViewFriendboard}
+                className="w-full gap-2"
+              >
+                <Users className="w-5 h-5" />
+                {t('linkCreated.viewResponses')}
+              </Button>
 
               <ArabicAdBanner />
             </div>
