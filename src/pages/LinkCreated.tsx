@@ -41,11 +41,7 @@ const LinkCreated = () => {
       return;
     }
 
-    const { data: prankData } = await supabase
-      .from("pranks")
-      .select("*")
-      .eq("id", prankId)
-      .maybeSingle();
+    const { data: prankData } = await supabase.from("pranks").select("*").eq("id", prankId).maybeSingle();
 
     if (prankData) {
       setPrank(prankData);
@@ -74,24 +70,25 @@ const LinkCreated = () => {
     setIsRefreshing(true);
     await fetchData();
     setIsRefreshing(false);
-    toast.success(t('linkCreated.refreshed') || "Refreshed!");
+    toast.success(t("linkCreated.refreshed") || "Refreshed!");
   };
 
   // Use language prefix for the love link
-  const loveLink = language === 'ja' 
-    ? `${window.location.origin}/love?id=${prankId}`
-    : `${window.location.origin}/${language}/love?id=${prankId}`;
-  
-  const shareText = t('share.text');
+  const loveLink =
+    language === "ja"
+      ? `${window.location.origin}/love?id=${prankId}`
+      : `${window.location.origin}/${language}/love?id=${prankId}`;
+
+  const shareText = t("share.text");
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(loveLink);
       setCopied(true);
-      toast.success(t('linkCreated.copied'));
+      toast.success(t("linkCreated.copied"));
       setTimeout(() => setCopied(false), 3000);
     } catch {
-      toast.error(t('linkCreated.copyFailed'));
+      toast.error(t("linkCreated.copyFailed"));
     }
   };
 
@@ -99,7 +96,7 @@ const LinkCreated = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: t('meta.title'),
+          title: t("meta.title"),
           text: shareText,
           url: loveLink,
         });
@@ -122,7 +119,8 @@ const LinkCreated = () => {
   };
 
   const handleSnapchatShare = () => {
-    const stickerUrl = "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/Snap_New/LoveMeter_CA-English.png";
+    const stickerUrl =
+      "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/Snap_New/LoveMeter_CA-English.png";
     const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}&sticker=${encodeURIComponent(stickerUrl)}`;
     window.open(url, "_blank");
   };
@@ -138,26 +136,22 @@ const LinkCreated = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <FloatingHearts />
-      
+
       <div className="absolute top-4 right-4 z-20">
         <LanguageSwitcher />
       </div>
-      
+
       <div className="relative z-10 container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
               <HeartIcon size="lg" animated />
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
-              {t('linkCreated.title')}
-            </h1>
-            <p className="text-muted-foreground">
-              {t('linkCreated.subtitle')}
-            </p>
+            <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-4">{t("linkCreated.title")}</h1>
+            <p className="text-muted-foreground">{t("linkCreated.subtitle")}</p>
             {prank && (
               <p className="text-sm text-primary mt-2">
-                {t('linkCreated.creator')}: <span className="font-bold">{prank.creator_name}</span>
+                {t("linkCreated.creator")}: <span className="font-bold">{prank.creator_name}</span>
               </p>
             )}
           </div>
@@ -167,33 +161,27 @@ const LinkCreated = () => {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
                 <Heart className="w-5 h-5 text-primary" fill="currentColor" />
-                {t('friendboard.title')}
+                {t("friendboard.title")}
               </h2>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleRefresh}
-                disabled={isRefreshing}
-                className="gap-2"
-              >
-                <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                {t('linkCreated.refresh') || "Refresh"}
+              <Button variant="ghost" size="sm" onClick={handleRefresh} disabled={isRefreshing} className="gap-2">
+                <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />
+                {t("linkCreated.refresh") || "Refresh"}
               </Button>
             </div>
 
             {responses.length === 0 ? (
               <div className="card-romantic rounded-2xl p-6 text-center">
                 <Heart className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-40" />
-                <p className="text-muted-foreground">{t('friendboard.noResponses')}</p>
-                <p className="text-sm text-muted-foreground mt-1">{t('friendboard.shareToGet')}</p>
+                <p className="text-muted-foreground">{t("friendboard.noResponses")}</p>
+                <p className="text-sm text-muted-foreground mt-1">{t("friendboard.shareToGet")}</p>
               </div>
             ) : (
               <div className="rounded-2xl overflow-hidden border-2 border-primary/30">
                 {/* Table Header */}
                 <div className="bg-primary text-primary-foreground">
                   <div className="grid grid-cols-2 text-center font-bold py-3 px-4">
-                    <div>{t('friendboard.friendName') || "Friend-Name"}</div>
-                    <div>{t('friendboard.crushName') || "Name of Crush"}</div>
+                    <div>{t("friendName") || "Friend-Name"}</div>
+                    <div>{t("friendboard.crushName") || "Name of Crush"}</div>
                   </div>
                 </div>
                 {/* Table Body */}
@@ -202,7 +190,7 @@ const LinkCreated = () => {
                     <div
                       key={response.id}
                       className={`grid grid-cols-2 text-center py-3 px-4 ${
-                        index !== responses.length - 1 ? 'border-b border-primary/20' : ''
+                        index !== responses.length - 1 ? "border-b border-primary/20" : ""
                       }`}
                     >
                       <div className="font-medium text-foreground">{response.friend_name}</div>
@@ -222,18 +210,10 @@ const LinkCreated = () => {
 
             <div className="relative z-10 space-y-6">
               <div className="space-y-3">
-                <label className="text-sm font-semibold text-foreground">
-                  {t('linkCreated.shareLabel')}
-                </label>
-                <p className="text-xs text-muted-foreground">
-                  {t('linkCreated.shareHint')}
-                </p>
+                <label className="text-sm font-semibold text-foreground">{t("linkCreated.shareLabel")}</label>
+                <p className="text-xs text-muted-foreground">{t("linkCreated.shareHint")}</p>
                 <div className="flex gap-2">
-                  <Input
-                    value={loveLink}
-                    readOnly
-                    className="text-sm"
-                  />
+                  <Input value={loveLink} readOnly className="text-sm" />
                   <Button
                     variant={copied ? "soft" : "romantic"}
                     size="icon"
@@ -247,18 +227,18 @@ const LinkCreated = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <Button variant="soft" onClick={handleCopy}>
-                  {t('linkCreated.copyLink')}
+                  {t("linkCreated.copyLink")}
                 </Button>
                 <Button variant="romantic" onClick={handleShare}>
-                  {t('linkCreated.share')}
+                  {t("linkCreated.share")}
                 </Button>
               </div>
 
               <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground text-center">{t('linkCreated.shareVia')}</p>
+                <p className="text-sm font-semibold text-foreground text-center">{t("linkCreated.shareVia")}</p>
                 <div className="grid grid-cols-3 gap-2">
-                  <Button 
-                    variant="soft" 
+                  <Button
+                    variant="soft"
                     size="sm"
                     onClick={handleWhatsAppShare}
                     className="flex flex-col items-center gap-1 h-auto py-3 bg-green-500/10 hover:bg-green-500/20 text-green-600"
@@ -266,8 +246,8 @@ const LinkCreated = () => {
                     <span className="text-xl">💬</span>
                     <span className="text-xs">WhatsApp</span>
                   </Button>
-                  <Button 
-                    variant="soft" 
+                  <Button
+                    variant="soft"
                     size="sm"
                     onClick={handleTwitterShare}
                     className="flex flex-col items-center gap-1 h-auto py-3 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600"
@@ -275,8 +255,8 @@ const LinkCreated = () => {
                     <span className="text-xl">🐦</span>
                     <span className="text-xs">Twitter</span>
                   </Button>
-                  <Button 
-                    variant="soft" 
+                  <Button
+                    variant="soft"
                     size="sm"
                     onClick={handleSnapchatShare}
                     className="flex flex-col items-center gap-1 h-auto py-3 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-600"
