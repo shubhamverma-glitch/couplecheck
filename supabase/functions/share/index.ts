@@ -7,31 +7,31 @@ const corsHeaders = {
 
 const languageConfigs: Record<string, { metaImage: string; title: string; ogTitle: string; ogDescription: string }> = {
   en: {
-    metaImage: "https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Arabic.png",
+    metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
     title: "Love Check - Love Compatibility Test",
     ogTitle: "💝 Love Calculator - Check Your Compatibility 💝",
     ogDescription: "Valentine week just got intensified ❤️ This Love calculator shows your true compatibility % 😳 Check your score NOW👇",
   },
   ar: {
-    metaImage: "https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Arabic.png",
+    metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
     title: "اختبار الحب - اختبار التوافق في الحب",
     ogTitle: "💝 حاسبة الحب - تحقق من توافقك 💝",
     ogDescription: "أسبوع الفالنتاين صار أقوى ❤️ حاسبة الحب هذي تبين نسبة توافقكم الحقيقية % 😳 شيك على نتيجتك الحين👇",
   },
   es: {
-    metaImage: "https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Spanish.png",
+    metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
     title: "Love Check - Test de Compatibilidad Amorosa",
     ogTitle: "💝 Test de Amor - Comprueba Tu Compatibilidad 💝",
     ogDescription: "🥰 ¡Encuentra tu pareja ideal con este test! 🥰",
   },
   fr: {
-    metaImage: "https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_French.png",
+    metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
     title: "Love Check - Test de Compatibilité Amoureuse",
     ogTitle: "💝 Test d'Amour - Vérifie Ta Compatibilité 💝",
     ogDescription: "🥰 Trouve ton âme sœur avec ce test ! 🥰",
   },
   ja: {
-    metaImage: "https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Japanese.png",
+    metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
     title: "ラブチェック - 愛の相性診断",
     ogTitle: "💝 恋愛診断 - 好きな人との相性をチェック 💝",
     ogDescription: "🥰 このテストで本当の恋の相手を見つけよう！ 🥰",
