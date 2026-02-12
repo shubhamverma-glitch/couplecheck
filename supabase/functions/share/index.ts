@@ -21,22 +21,27 @@ const languageConfigs: Record<string, { metaImage: string; title: string; ogTitl
   es: {
     metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
     title: "Love Check - Test de Compatibilidad Amorosa",
-    ogTitle: "💝 Test de Amor - Comprueba Tu Compatibilidad 💝",
-    ogDescription: "🥰 ¡Encuentra tu pareja ideal con este test! 🥰",
+    ogTitle: "💝 Calculadora de Amor - Comprueba tu Compatibilidad 💝",
+    ogDescription: "¡La semana de San Valentín se puso intensa! ❤️ Esta calculadora de amor muestra tu compatibilidad real % 😳 ¡Mira tu resultado AHORA👇",
   },
   fr: {
     metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
     title: "Love Check - Test de Compatibilité Amoureuse",
-    ogTitle: "💝 Test d'Amour - Vérifie Ta Compatibilité 💝",
-    ogDescription: "🥰 Trouve ton âme sœur avec ce test ! 🥰",
+    ogTitle: "💝 Calculatrice d'Amour - Vérifiez Votre Compatibilité 💝",
+    ogDescription: "La semaine de la Saint-Valentin vient de s'intensifier ❤️ Cette calculatrice d'amour montre votre vraie compatibilité % 😳 Vérifiez votre score MAINTENANT👇",
   },
   ja: {
     metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
     title: "ラブチェック - 愛の相性診断",
-    ogTitle: "💝 恋愛診断 - 好きな人との相性をチェック 💝",
-    ogDescription: "🥰 このテストで本当の恋の相手を見つけよう！ 🥰",
+    ogTitle: "💝 恋愛計算機 - あなたの相性をチェック 💝",
+    ogDescription: "バレンタインウィークがもっと熱くなった ❤️ この恋愛計算機であなたの本当の相性%がわかる 😳 今すぐスコアをチェック👇",
   },
-};
+  ko: {
+    metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
+    title: "러브 체크 - 사랑 궁합 테스트",
+    ogTitle: "💝 사랑 계산기 - 당신의 궁합을 확인하세요 💝",
+    ogDescription: "발렌타인 주간이 더 뜨거워졌다 ❤️ 이 사랑 계산기가 당신의 진짜 궁합 %를 보여줍니다 😳 지금 바로 점수를 확인하세요👇",
+  },
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
