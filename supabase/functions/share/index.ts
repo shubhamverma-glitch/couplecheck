@@ -9,14 +9,14 @@ const languageConfigs: Record<string, { metaImage: string; title: string; ogTitl
   en: {
     metaImage: "https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Arabic.png",
     title: "Love Check - Love Compatibility Test",
-    ogTitle: "💝 Love Test - Check Your Compatibility 💝",
-    ogDescription: "🥰 Find your true love match with this test! 🥰",
+    ogTitle: "💝 Love Calculator - Check Your Compatibility 💝",
+    ogDescription: "Valentine week just got intensified ❤️ This Love calculator shows your true compatibility % 😳 Check your score NOW👇",
   },
   ar: {
     metaImage: "https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Arabic.png",
     title: "اختبار الحب - اختبار التوافق في الحب",
-    ogTitle: "💝 اختبار الحب - تحقق من توافقك 💝",
-    ogDescription: "🥰 اكتشف شريكك الحقيقي مع هذا الاختبار! 🥰",
+    ogTitle: "💝 حاسبة الحب - تحقق من توافقك 💝",
+    ogDescription: "أسبوع الفالنتاين صار أقوى ❤️ حاسبة الحب هذي تبين نسبة توافقكم الحقيقية % 😳 شيك على نتيجتك الحين👇",
   },
   es: {
     metaImage: "https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Spanish.png",
