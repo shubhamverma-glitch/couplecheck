@@ -15,35 +15,35 @@ export const languageConfigs: Record<Language, LanguageConfig> = {
     name: 'Japanese',
     nativeName: '日本語',
     dir: 'ltr',
-    metaImage: 'https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Japanese.png',
+    metaImage: 'https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg',
   },
   en: {
     code: 'en',
     name: 'English',
     nativeName: 'English',
     dir: 'ltr',
-    metaImage: 'https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Arabic.png',
+    metaImage: 'https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg',
   },
   ar: {
     code: 'ar',
     name: 'Arabic',
     nativeName: 'العربية',
     dir: 'rtl',
-    metaImage: 'https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Arabic.png',
+    metaImage: 'https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg',
   },
   es: {
     code: 'es',
     name: 'Spanish',
     nativeName: 'Español',
     dir: 'ltr',
-    metaImage: 'https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_Spanish.png',
+    metaImage: 'https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg',
   },
   fr: {
     code: 'fr',
     name: 'French',
     nativeName: 'Français',
     dir: 'ltr',
-    metaImage: 'https://img.bakequiz.com/public/site_content/quiz/ck_editor/images/lovemeter/LC_Meta_French.png',
+    metaImage: 'https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg',
   },
 };
 
@@ -51,9 +51,9 @@ export const translations: Record<Language, Record<string, string>> = {
   ja: {
     // Meta
     'meta.title': 'ラブチェック - 愛の相性診断',
-    'meta.description': 'あなたの恋愛相性を診断して、本当の愛の強さを確かめよう！',
-    'meta.ogTitle': '💝 恋愛診断 - 好きな人との相性をチェック 💝',
-    'meta.ogDescription': '🥰 このテストで本当の恋の相手を見つけよう！ 🥰',
+    'meta.description': 'バレンタインウィークがもっと熱くなった ❤️ この恋愛計算機であなたの本当の相性%がわかる 😳 今すぐスコアをチェック👇',
+    'meta.ogTitle': '💝 恋愛計算機 - あなたの相性をチェック 💝',
+    'meta.ogDescription': 'バレンタインウィークがもっと熱くなった ❤️ この恋愛計算機であなたの本当の相性%がわかる 😳 今すぐスコアをチェック👇',
     
     // Index page
     'index.title': 'ラブトラップ',
@@ -136,15 +136,15 @@ export const translations: Record<Language, Record<string, string>> = {
     'notFound.backHome': 'ホームに戻る',
     
     // Share text
-    'share.text': '💝👩‍❤️‍👨 *本当の愛*か*ただの片思い*か？ 👩‍❤️‍👩💝\n🥰 このテストで本当の恋の相手を見つけよう！ 🥰\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
+    'share.text': '💝👩‍❤️‍👨 バレンタインウィークがもっと熱くなった ❤️ 👩‍❤️‍👩💝\nこの恋愛計算機であなたの本当の相性%がわかる 😳\n今すぐスコアをチェック👇\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
   },
   
   en: {
     // Meta
     'meta.title': 'Love Check - Love Compatibility Test',
-    'meta.description': 'Test your love compatibility and discover the true strength of your love!',
-    'meta.ogTitle': '💝 Love Test - Check Your Compatibility 💝',
-    'meta.ogDescription': '🥰 Find your true love match with this test! 🥰',
+    'meta.description': 'Valentine week just got intensified ❤️ This Love calculator shows your true compatibility % 😳 Check your score NOW👇',
+    'meta.ogTitle': '💝 Love Calculator - Check Your Compatibility 💝',
+    'meta.ogDescription': 'Valentine week just got intensified ❤️ This Love calculator shows your true compatibility % 😳 Check your score NOW👇',
     
     // Index page
     'index.title': 'Love Trap',
@@ -227,15 +227,15 @@ export const translations: Record<Language, Record<string, string>> = {
     'notFound.backHome': 'Back to Home',
     
     // Share text
-    'share.text': '💝👩‍❤️‍👨 *True Love* or *Just a Crush*? 👩‍❤️‍👩💝\n🥰 Find your true love match with this test! 🥰\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
+    'share.text': '💝👩‍❤️‍👨 Valentine week just got intensified ❤️ 👩‍❤️‍👩💝\nThis Love calculator shows your true compatibility % 😳\nCheck your score NOW👇\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
   },
   
   ar: {
     // Meta
     'meta.title': 'فحص الحب - اختبار التوافق العاطفي',
-    'meta.description': 'اختبر توافقك العاطفي واكتشف قوة حبك الحقيقية!',
-    'meta.ogTitle': '💝 اختبار الحب - تحقق من توافقك 💝',
-    'meta.ogDescription': '🥰 اكتشف شريك حياتك الحقيقي مع هذا الاختبار! 🥰',
+    'meta.description': 'أسبوع الفالنتاين صار أقوى ❤️ حاسبة الحب هذي تبين نسبة توافقكم الحقيقية % 😳 شيك على نتيجتك الحين👇',
+    'meta.ogTitle': '💝 حاسبة الحب - تحقق من توافقك 💝',
+    'meta.ogDescription': 'أسبوع الفالنتاين صار أقوى ❤️ حاسبة الحب هذي تبين نسبة توافقكم الحقيقية % 😳 شيك على نتيجتك الحين👇',
     
     // Index page
     'index.title': 'فخ الحب',
@@ -318,15 +318,15 @@ export const translations: Record<Language, Record<string, string>> = {
     'notFound.backHome': 'العودة للرئيسية',
     
     // Share text
-    'share.text': '💝👩‍❤️‍👨 *حب حقيقي* أم *مجرد إعجاب*؟ 👩‍❤️‍👩💝\n🥰 اكتشف شريك حياتك الحقيقي مع هذا الاختبار! 🥰\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
+    'share.text': '💝👩‍❤️‍👨 أسبوع الفالنتاين صار أقوى ❤️ 👩‍❤️‍👩💝\nحاسبة الحب هذي تبين نسبة توافقكم الحقيقية % 😳\nشيك على نتيجتك الحين👇\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
   },
   
   es: {
     // Meta
     'meta.title': 'Love Check - Test de Compatibilidad Amorosa',
-    'meta.description': '¡Prueba tu compatibilidad amorosa y descubre la verdadera fuerza de tu amor!',
-    'meta.ogTitle': '💝 Test de Amor - Comprueba tu Compatibilidad 💝',
-    'meta.ogDescription': '🥰 ¡Encuentra tu amor verdadero con este test! 🥰',
+    'meta.description': '¡La semana de San Valentín se puso intensa! ❤️ Esta calculadora de amor muestra tu compatibilidad real % 😳 ¡Mira tu resultado AHORA👇',
+    'meta.ogTitle': '💝 Calculadora de Amor - Comprueba tu Compatibilidad 💝',
+    'meta.ogDescription': '¡La semana de San Valentín se puso intensa! ❤️ Esta calculadora de amor muestra tu compatibilidad real % 😳 ¡Mira tu resultado AHORA👇',
     
     // Index page
     'index.title': 'Trampa de Amor',
@@ -409,15 +409,15 @@ export const translations: Record<Language, Record<string, string>> = {
     'notFound.backHome': 'Volver al Inicio',
     
     // Share text
-    'share.text': '💝👩‍❤️‍👨 ¿*Amor Verdadero* o *Solo un Crush*? 👩‍❤️‍👩💝\n🥰 ¡Encuentra tu amor verdadero con este test! 🥰\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
+    'share.text': '💝👩‍❤️‍👨 ¡La semana de San Valentín se puso intensa! ❤️ 👩‍❤️‍👩💝\nEsta calculadora de amor muestra tu compatibilidad real % 😳\n¡Mira tu resultado AHORA👇\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
   },
   
   fr: {
     // Meta
     'meta.title': 'Love Check - Test de Compatibilité Amoureuse',
-    'meta.description': 'Testez votre compatibilité amoureuse et découvrez la vraie force de votre amour!',
-    'meta.ogTitle': '💝 Test d\'Amour - Vérifiez Votre Compatibilité 💝',
-    'meta.ogDescription': '🥰 Trouvez votre vrai amour avec ce test! 🥰',
+    'meta.description': 'La semaine de la Saint-Valentin vient de s\'intensifier ❤️ Cette calculatrice d\'amour montre votre vraie compatibilité % 😳 Vérifiez votre score MAINTENANT👇',
+    'meta.ogTitle': '💝 Calculatrice d\'Amour - Vérifiez Votre Compatibilité 💝',
+    'meta.ogDescription': 'La semaine de la Saint-Valentin vient de s\'intensifier ❤️ Cette calculatrice d\'amour montre votre vraie compatibilité % 😳 Vérifiez votre score MAINTENANT👇',
     
     // Index page
     'index.title': 'Piège d\'Amour',
@@ -500,7 +500,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'notFound.backHome': 'Retour à l\'Accueil',
     
     // Share text
-    'share.text': '💝👩‍❤️‍👨 *Vrai Amour* ou *Juste un Crush*? 👩‍❤️‍👩💝\n🥰 Trouvez votre vrai amour avec ce test! 🥰\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
+    'share.text': '💝👩‍❤️‍👨 La semaine de la Saint-Valentin s\'intensifie ❤️ 👩‍❤️‍👩💝\nCette calculatrice d\'amour montre votre vraie compatibilité % 😳\nVérifiez votre score MAINTENANT👇\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
   },
 };
 
