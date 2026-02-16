@@ -16,7 +16,7 @@ const languageConfigs: Record<string, { metaImage: string; title: string; ogTitl
     metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
     title: "اختبار الحب - اختبار التوافق في الحب",
     ogTitle: "💝 حاسبة الحب - تحقق من توافقك 💝",
-    ogDescription: "أسبوع الفالنتاين صار أقوى ❤️ حاسبة الحب هذي تبين نسبة توافقكم الحقيقية % 😳 شيك على نتيجتك الحين👇",
+ogDescription: "أسبوع الحب أصبح أكثر إثارة ❤️ حاسبة توافق الحب هذه تكشف نسبة التوافق الحقيقية بينكما 😳 تحقق من نتيجتك الآن 👇"
   },
   es: {
     metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
