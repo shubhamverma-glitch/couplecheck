@@ -29,7 +29,7 @@ export const languageConfigs: Record<Language, LanguageConfig> = {
     name: 'Arabic',
     nativeName: 'العربية',
     dir: 'rtl',
-    metaImage: 'https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg',
+    metaImage: 'https://img.myfriendshipquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_ar_800x420.jpg',
   },
   es: {
     code: 'es',
@@ -234,8 +234,8 @@ export const translations: Record<Language, Record<string, string>> = {
     // Meta
     'meta.title': 'فحص الحب - اختبار التوافق العاطفي',
     'meta.description': 'أسبوع الفالنتاين صار أقوى ❤️ حاسبة الحب هذي تبين نسبة توافقكم الحقيقية % 😳 شيك على نتيجتك الحين👇',
-    'meta.ogTitle': '💝 حاسبة الحب - تحقق من توافقك 💝',
-    'meta.ogDescription': 'أسبوع الفالنتاين صار أقوى ❤️ حاسبة الحب هذي تبين نسبة توافقكم الحقيقية % 😳 شيك على نتيجتك الحين👇',
+    'meta.ogTitle': '💖 Love Calculator - Find Your Match! 💖',
+    'meta.ogDescription': 'Is it meant to be? 😳 See your true compatibility score in seconds! Don\'t wait—check yours now:',
     
     // Index page
     'index.title': 'فخ الحب',
@@ -318,7 +318,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'notFound.backHome': 'العودة للرئيسية',
     
     // Share text
-    'share.text': '💝👩‍❤️‍👨 أسبوع الفالنتاين صار أقوى ❤️ 👩‍❤️‍👩💝\nحاسبة الحب هذي تبين نسبة توافقكم الحقيقية % 😳\nشيك على نتيجتك الحين👇\n🤩👇🏻👇🏻👇🏻👇🏻👇🏻🤩',
+    'share.text': 'يا برو، أنا ما عم بمزح! 😳\nحاسبة الحب هي رح تكشف لك شريك حياتك الحقيقي ❤️\nافحص نتيجتك الآن 👇',
   },
   
   es: {
