@@ -47,40 +47,7 @@ const Friendboard = () => {
     ? `${window.location.origin}/love?id=${prankId}`
     : `${window.location.origin}/${language}/love?id=${prankId}`;
 
-  // Edge function URL for social sharing (serves localized OG meta tags)
-  const shareLink = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/share?lang=${language}&path=/love&id=${prankId}`;
-
   const shareText = t('share.text');
-
-  useEffect(() => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: "friend_board" });
-
-    const fetchData = async () => {
-      if (!prankId) {
-        setIsLoading(false);
-        return;
-      }
-      const { data: prankData } = await supabase
-        .from("pranks")
-        .select("*")
-        .eq("id", prankId)
-        .maybeSingle();
-      if (prankData) {
-        setPrank(prankData);
-      }
-      const { data: responsesData } = await supabase
-        .from("prank_responses")
-        .select("*")
-        .eq("prank_id", prankId)
-        .order("submitted_at", { ascending: false });
-      if (responsesData) {
-        setResponses(responsesData as PrankResponse[]);
-      }
-      setIsLoading(false);
-    };
-    fetchData();
-  }, [prankId]);
 
   const formatDate = (dateString: string) => {
     const locale = language === 'ja' ? 'ja-JP' : language === 'ar' ? 'ar-SA' : language === 'es' ? 'es-ES' : language === 'fr' ? 'fr-FR' : 'en-US';
@@ -104,17 +71,17 @@ const Friendboard = () => {
   };
 
   const handleWhatsAppShare = () => {
-    const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + shareLink)}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + loveLink)}`;
     window.open(url, "_blank");
   };
 
   const handleTwitterShare = () => {
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareLink)}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(loveLink)}`;
     window.open(url, "_blank");
   };
 
   const handleSnapchatShare = () => {
-    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(shareLink)}`;
+    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}`;
     window.open(url, "_blank");
   };
 
