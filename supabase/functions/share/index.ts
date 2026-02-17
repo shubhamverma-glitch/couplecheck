@@ -9,14 +9,14 @@ const languageConfigs: Record<string, { metaImage: string; title: string; ogTitl
   en: {
     metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
     title: "Love Check - Love Compatibility Test",
-    ogTitle: "💝 Love Calculator - Check Your Compatibility 💝",
-    ogDescription: "Valentine week just got intensified ❤️ This Love calculator shows your true compatibility % 😳 Check your score NOW👇",
+    ogTitle: "💖 Love Calculator - Find Your Match! 💖",
+    ogDescription: "Is it meant to be? 😳 See your true compatibility score in seconds!",
   },
   ar: {
     metaImage: "https://img.myfriendshipquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_ar_800x420.jpg",
     title: "اختبار الحب - اختبار التوافق في الحب",
-    ogTitle: "💖 Love Calculator - Find Your Match! 💖",
-    ogDescription: "Is it meant to be? 😳 See your true compatibility score in seconds! Don't wait—check yours now:",
+    ogTitle: "💖 حاسبة الحب - اكتشف شريكك الحقيقي! 💖",
+    ogDescription: "هل أنتما مقدران لبعضكما؟ 😳 اكتشف نسبة التوافق الحقيقية بينكما في ثوانٍ!",
   },
   es: {
     metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
