@@ -143,8 +143,8 @@ export const translations: Record<Language, Record<string, string>> = {
     // Meta
     'meta.title': 'Love Check - Love Compatibility Test',
     'meta.description': 'Valentine week just got intensified ❤️ This Love calculator shows your true compatibility % 😳 Check your score NOW👇',
-    'meta.ogTitle': '💝 Love Calculator - Check Your Compatibility 💝',
-    'meta.ogDescription': 'Valentine week just got intensified ❤️ This Love calculator shows your true compatibility % 😳 Check your score NOW👇',
+    'meta.ogTitle': '💖 Love Calculator - Find Your Match! 💖',
+    'meta.ogDescription': 'Is it meant to be? 😳 See your true compatibility score in seconds!',
     
     // Index page
     'index.title': 'Love Trap',
@@ -234,8 +234,8 @@ export const translations: Record<Language, Record<string, string>> = {
     // Meta
     'meta.title': 'فحص الحب - اختبار التوافق العاطفي',
     'meta.description': 'أسبوع الفالنتاين صار أقوى ❤️ حاسبة الحب هذي تبين نسبة توافقكم الحقيقية % 😳 شيك على نتيجتك الحين👇',
-    'meta.ogTitle': '💖 Love Calculator - Find Your Match! 💖',
-    'meta.ogDescription': 'Is it meant to be? 😳 See your true compatibility score in seconds! Don\'t wait—check yours now:',
+    'meta.ogTitle': '💖 حاسبة الحب - اكتشف شريكك الحقيقي! 💖',
+    'meta.ogDescription': 'هل أنتما مقدران لبعضكما؟ 😳 اكتشف نسبة التوافق الحقيقية بينكما في ثوانٍ!',
     
     // Index page
     'index.title': 'فخ الحب',
