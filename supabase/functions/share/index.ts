@@ -13,10 +13,10 @@ const languageConfigs: Record<string, { metaImage: string; title: string; ogTitl
     ogDescription: "Valentine week just got intensified ❤️ This Love calculator shows your true compatibility % 😳 Check your score NOW👇",
   },
   ar: {
-    metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
+    metaImage: "https://img.myfriendshipquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_ar_800x420.jpg",
     title: "اختبار الحب - اختبار التوافق في الحب",
-    ogTitle: "💝 حاسبة الحب - تحقق من توافقك 💝",
-ogDescription: "أسبوع الحب أصبح أكثر إثارة ❤️ حاسبة توافق الحب هذه تكشف نسبة التوافق الحقيقية بينكما 😳 تحقق من نتيجتك الآن 👇"
+    ogTitle: "💖 Love Calculator - Find Your Match! 💖",
+    ogDescription: "Is it meant to be? 😳 See your true compatibility score in seconds! Don't wait—check yours now:",
   },
   es: {
     metaImage: "https://img.holaquiz.com/public/site_content/quiz/ck_editor/images/love_calculator_meta_800x420.jpg",
