@@ -46,6 +46,10 @@ const Friendboard = () => {
   const loveLink = language === 'ja' 
     ? `${window.location.origin}/love?id=${prankId}`
     : `${window.location.origin}/${language}/love?id=${prankId}`;
+
+  // Edge function URL for social sharing (serves localized OG meta tags)
+  const shareLink = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/share?lang=${language}&path=/love&id=${prankId}`;
+
   const shareText = t('share.text');
 
   useEffect(() => {
@@ -100,17 +104,17 @@ const Friendboard = () => {
   };
 
   const handleWhatsAppShare = () => {
-    const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + loveLink)}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + shareLink)}`;
     window.open(url, "_blank");
   };
 
   const handleTwitterShare = () => {
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(loveLink)}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareLink)}`;
     window.open(url, "_blank");
   };
 
   const handleSnapchatShare = () => {
-    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(loveLink)}`;
+    const url = `https://www.snapchat.com/share?url=${encodeURIComponent(shareLink)}`;
     window.open(url, "_blank");
   };
 
