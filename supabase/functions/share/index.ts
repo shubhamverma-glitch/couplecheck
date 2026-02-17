@@ -42,6 +42,7 @@ const languageConfigs: Record<string, { metaImage: string; title: string; ogTitl
     ogTitle: "💝 사랑 계산기 - 당신의 궁합을 확인하세요 💝",
     ogDescription: "발렌타인 주간이 더 뜨거워졌다 ❤️ 이 사랑 계산기가 당신의 진짜 궁합 %를 보여줍니다 😳 지금 바로 점수를 확인하세요👇",
   },
+};
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
